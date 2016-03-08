@@ -148,26 +148,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     @Override
                     public void onClick(View v) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        long time = 0;
                         editor.putString(getString(R.string.pref_key_snooze), "" + countDay + " " + rep).apply();
-                        if (rep.equals("second(s)"))
-                            time = countDay;
-                        else if (rep.equals("minute(s)"))
-                            time = countDay * 60;
-                        else if (rep.equals("hour(s)"))
-                            time = countDay * 3600;
-                        else if (rep.equals("week(s)"))
-                            time = countDay * 7 * 24;
-                        else if (rep.equals("day(s)"))
-                            time = countDay * 24;
-                        else if (rep.equals("month(s)")) {
-                            Calendar c = Calendar.getInstance();
-                            for (int i = 1; i <= countDay; i++) {
-                                time += c.getActualMaximum(Calendar.DAY_OF_MONTH) * 24 * 60 * 60;
-                                c.add(Calendar.MONTH, 1);
-                            }
-                        } else if (rep.equals("year(s)"))
-                            time = countDay * 365 * 24 * 60 * 60;
                         snoozePref.setSummary("" + countDay + " " + rep);
 
                         dialog.dismiss();
@@ -262,7 +243,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        //sharedPreferences.getString(getString(R.string.pref_key_ringtone),"");
         if(key.equals(getString(R.string.pref_key_ringtone))){
             pref = findPreference(getString(R.string.pref_key_ringtone));
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
