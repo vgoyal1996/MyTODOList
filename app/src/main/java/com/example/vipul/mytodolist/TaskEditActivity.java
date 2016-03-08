@@ -151,70 +151,66 @@ public class TaskEditActivity extends Activity {
                 e.printStackTrace();
             }
             int f = 0;
-            c.add(Calendar.DAY_OF_MONTH, -1);
-            if (c.compareTo(cur) == 0) {
-                editDaily.setChecked(true);
-                f = 1;
-                c.add(Calendar.DAY_OF_MONTH, 1);
-            } else {
-                c.add(Calendar.DAY_OF_MONTH, 1);
-            }
-            c.add(Calendar.DAY_OF_MONTH, -7);
-            if (c.compareTo(cur) == 0) {
-                editWeekly.setChecked(true);
-                f = 1;
-                c.add(Calendar.DAY_OF_MONTH, 7);
-            } else {
-                c.add(Calendar.DAY_OF_MONTH, 7);
-            }
-            c.add(Calendar.MONTH, -1);
-            if (c.compareTo(cur) == 0) {
-                editMonthly.setChecked(true);
-                f = 1;
-                c.add(Calendar.MONTH, 1);
-            } else {
-                c.add(Calendar.MONTH, 1);
-            }
-            c.add(Calendar.YEAR,-1);
-            if(c.compareTo(cur)==0){
-                editMonthly.setChecked(true);
-                f = 1;
-                c.add(Calendar.YEAR, 1);
-            } else {
-                c.add(Calendar.YEAR,1);
-            }
-            if (f == 0) {
-                if(c.get(Calendar.DAY_OF_MONTH)-cur.get(Calendar.DAY_OF_MONTH)!=0){
-                    if((c.get(Calendar.DAY_OF_MONTH)-cur.get(Calendar.DAY_OF_MONTH)%7!=0)){
-                        countday = c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH);
-                        rep = daysList[3];
+            if(val) {
+                c.add(Calendar.DAY_OF_MONTH, -1);
+                if (c.compareTo(cur) == 0) {
+                    editDaily.setChecked(true);
+                    f = 1;
+                    c.add(Calendar.DAY_OF_MONTH, 1);
+                } else {
+                    c.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                c.add(Calendar.DAY_OF_MONTH, -7);
+                if (c.compareTo(cur) == 0) {
+                    editWeekly.setChecked(true);
+                    f = 1;
+                    c.add(Calendar.DAY_OF_MONTH, 7);
+                } else {
+                    c.add(Calendar.DAY_OF_MONTH, 7);
+                }
+                c.add(Calendar.MONTH, -1);
+                if (c.compareTo(cur) == 0) {
+                    editMonthly.setChecked(true);
+                    f = 1;
+                    c.add(Calendar.MONTH, 1);
+                } else {
+                    c.add(Calendar.MONTH, 1);
+                }
+                c.add(Calendar.YEAR, -1);
+                if (c.compareTo(cur) == 0) {
+                    editMonthly.setChecked(true);
+                    f = 1;
+                    c.add(Calendar.YEAR, 1);
+                } else {
+                    c.add(Calendar.YEAR, 1);
+                }
+                if (f == 0) {
+                    if (c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH) != 0) {
+                        if ((c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH) % 7 != 0)) {
+                            countday = c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH);
+                            rep = daysList[3];
+                        } else {
+                            countday = (c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH)) / 7;
+                            rep = daysList[4];
+                        }
+                    } else if (c.get(Calendar.YEAR) - cur.get(Calendar.YEAR) != 0) {
+                        countday = c.get(Calendar.YEAR) - cur.get(Calendar.YEAR);
+                        rep = daysList[6];
+                    } else if (c.get(Calendar.MONTH) - cur.get(Calendar.MONTH) != 0) {
+                        countday = c.get(Calendar.MONTH) - cur.get(Calendar.MONTH);
+                        rep = daysList[5];
+                    } else if (c.get(Calendar.HOUR_OF_DAY) - cur.get(Calendar.HOUR_OF_DAY) != 0) {
+                        countday = c.get(Calendar.HOUR_OF_DAY) - cur.get(Calendar.HOUR_OF_DAY);
+                        rep = daysList[2];
+                    } else if (c.get(Calendar.MINUTE) - cur.get(Calendar.MINUTE) != 0) {
+                        countday = c.get(Calendar.MINUTE) - cur.get(Calendar.MINUTE);
+                        rep = daysList[1];
+                    } else if (c.get(Calendar.SECOND) - cur.get(Calendar.SECOND) != 0) {
+                        countday = c.get(Calendar.SECOND) - cur.get(Calendar.SECOND);
+                        rep = daysList[0];
                     }
-                    else{
-                        countday = (c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH))/7;
-                        rep = daysList[4];
-                    }
+                    editOther.setChecked(true);
                 }
-                else if(c.get(Calendar.YEAR)-cur.get(Calendar.YEAR)!=0){
-                    countday = c.get(Calendar.YEAR)-cur.get(Calendar.YEAR);
-                    rep = daysList[6];
-                }
-                else if(c.get(Calendar.MONTH)-cur.get(Calendar.MONTH)!=0){
-                    countday = c.get(Calendar.MONTH)-cur.get(Calendar.MONTH);
-                    rep = daysList[5];
-                }
-                else if(c.get(Calendar.HOUR_OF_DAY)-cur.get(Calendar.HOUR_OF_DAY)!=0){
-                    countday = c.get(Calendar.HOUR_OF_DAY)-cur.get(Calendar.HOUR_OF_DAY);
-                    rep = daysList[2];
-                }
-                else if(c.get(Calendar.MINUTE)-cur.get(Calendar.MINUTE)!=0){
-                    countday = c.get(Calendar.MINUTE)-cur.get(Calendar.MINUTE);
-                    rep = daysList[1];
-                }
-                else if(c.get(Calendar.SECOND)-cur.get(Calendar.SECOND)!=0){
-                    countday = c.get(Calendar.SECOND)-cur.get(Calendar.SECOND);
-                    rep = daysList[0];
-                }
-                editOther.setChecked(true);
             }
             if (cursor.getString(6) != null)
                 editDescription.setText(cursor.getString(7));
