@@ -78,7 +78,7 @@ public class TaskEditActivity extends Activity {
     private int priority;
     private final String[] daysList = {"second(s)","minute(s)","hour(s)","day(s)","week(s)","month(s)","year(s)"};
     private int countday;
-    private String rep;
+    private String rep=daysList[0];
     int row;
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -183,8 +183,39 @@ public class TaskEditActivity extends Activity {
             } else {
                 c.add(Calendar.YEAR,1);
             }
-            if (f == 0)
+            if (f == 0) {
+                if(c.get(Calendar.DAY_OF_MONTH)-cur.get(Calendar.DAY_OF_MONTH)!=0){
+                    if((c.get(Calendar.DAY_OF_MONTH)-cur.get(Calendar.DAY_OF_MONTH)%7!=0)){
+                        countday = c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH);
+                        rep = daysList[3];
+                    }
+                    else{
+                        countday = (c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH))/7;
+                        rep = daysList[4];
+                    }
+                }
+                else if(c.get(Calendar.YEAR)-cur.get(Calendar.YEAR)!=0){
+                    countday = c.get(Calendar.YEAR)-cur.get(Calendar.YEAR);
+                    rep = daysList[6];
+                }
+                else if(c.get(Calendar.MONTH)-cur.get(Calendar.MONTH)!=0){
+                    countday = c.get(Calendar.MONTH)-cur.get(Calendar.MONTH);
+                    rep = daysList[5];
+                }
+                else if(c.get(Calendar.HOUR_OF_DAY)-cur.get(Calendar.HOUR_OF_DAY)!=0){
+                    countday = c.get(Calendar.HOUR_OF_DAY)-cur.get(Calendar.HOUR_OF_DAY);
+                    rep = daysList[2];
+                }
+                else if(c.get(Calendar.MINUTE)-cur.get(Calendar.MINUTE)!=0){
+                    countday = c.get(Calendar.MINUTE)-cur.get(Calendar.MINUTE);
+                    rep = daysList[1];
+                }
+                else if(c.get(Calendar.SECOND)-cur.get(Calendar.SECOND)!=0){
+                    countday = c.get(Calendar.SECOND)-cur.get(Calendar.SECOND);
+                    rep = daysList[0];
+                }
                 editOther.setChecked(true);
+            }
             if (cursor.getString(6) != null)
                 editDescription.setText(cursor.getString(7));
             boolean v = (cursor.getInt(10) != 0);
@@ -216,6 +247,8 @@ public class TaskEditActivity extends Activity {
         db.close();
     }
 
+
+
     public void updateTask(View v){
         String name = editname.getText().toString();
         String from = editFromDate.getText().toString();
@@ -233,24 +266,19 @@ public class TaskEditActivity extends Activity {
         }
         if(isrepeating){
             if(editDaily.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.DAY_OF_MONTH,1);
 
             }
             else if(editWeekly.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.DAY_OF_MONTH,7);
             }
             else if(editMonthly.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.MONTH,1);
             }
             else if(editYearly.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.YEAR,1);
             }
             else if(editOther.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 if(rep.equals("second(s)")){
                     c.add(Calendar.SECOND,countday);
                 }
@@ -278,13 +306,13 @@ public class TaskEditActivity extends Activity {
         boolean isReminderSet = editReminder.isChecked();
         SQLiteOpenHelper todoDatabaseHelper = new TODOListDatabaseHelper(this);
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
-        updateTask(db, name, from, to, time, timefinish, isrepeating, c, description, priority, finalImage, isReminderSet);
+        updateMyTask(db, name, from, to, time, timefinish, isrepeating, c, description, priority, finalImage, isReminderSet);
         //Toast.makeText(this,"inserted",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
 
-    public void updateTask(SQLiteDatabase db,String taskName, String startDate, String endDate, String startTime, String finishTime, boolean repeatTask,Calendar repeatAfterDate, String description, int priority, byte[] fi, boolean isReminderSet){
+    public void updateMyTask(SQLiteDatabase db,String taskName, String startDate, String endDate, String startTime, String finishTime, boolean repeatTask,Calendar repeatAfterDate, String description, int priority, byte[] fi, boolean isReminderSet){
         ContentValues taskValues = new ContentValues();
         taskValues.put("TASK_NAME",taskName);
         taskValues.put("START_DATE",startDate);
@@ -316,21 +344,16 @@ public class TaskEditActivity extends Activity {
             TimerService.taskCounters.remove(row);
 
         Intent i = new Intent(this,TimerService.class);
-        //TaskCountDown tcd = null;
         if((startDateAndTime.getTime()-(new Date().getTime()))>0){
             i.putExtra(TimerService.EXTRA_SERVICE_SECONDS,(startDateAndTime.getTime()-(new Date().getTime())));
             i.putExtra(TimerService.EXTRA_SERVICE_FLAG,1);
-            //tcd = new TaskCountDown((startDateAndTime.getTime()-(new Date().getTime())),1000,1,isReminderSet,taskName,priority,r);
         }
         else if(startDateAndTime.getTime()-(new Date().getTime())<=0){
             i.putExtra(TimerService.EXTRA_SERVICE_SECONDS,finishTimeAndDate.getTime()-(new Date().getTime()));
             i.putExtra(TimerService.EXTRA_SERVICE_FLAG,2);
-            //tcd = new TaskCountDown(finishTimeAndDate.getTime()-(new Date().getTime()),1000,2,isReminderSet,taskName,priority,r);
         }
-        //tcd.start();
 
         i.putExtra(TimerService.EXTRA_SERVICE_ROW,row);
-        //i.putExtra(TimerService.EXTRA_SERVICE_COUNTDOWN,tcd);
         i.putExtra(TimerService.EXTRA_SERVICE_COUNTDOWN_INTERVAL,(long)1000);
         i.putExtra(TimerService.EXTRA_SERVICE_PRIORITY,priority);
         i.putExtra(TimerService.EXTRA_SERVICE_REMINDER,isReminderSet);
@@ -409,7 +432,6 @@ public class TaskEditActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    //AlertDialog.Builder builder = new AlertDialog.Builder(NewTaskActivity.this);
                     final Dialog dialog = new Dialog(TaskEditActivity.this);
                     dialog.setContentView(R.layout.dialog_repeat);
                     final Spinner repeatList = (Spinner) dialog.findViewById(R.id.daylist);
@@ -423,6 +445,21 @@ public class TaskEditActivity extends Activity {
                     Button countdownButton = (Button) dialog.findViewById(R.id.countdown_button);
                     Button dontrepeatButton = (Button) dialog.findViewById(R.id.repeat_button);
                     Button okButton = (Button) dialog.findViewById(R.id.ok_button);
+                    daycountText.setText(""+countday);
+                    if(rep.equals(daysList[0]))
+                        repeatList.setSelection(0);
+                    if(rep.equals(daysList[1]))
+                        repeatList.setSelection(1);
+                    if(rep.equals(daysList[2]))
+                        repeatList.setSelection(2);
+                    if(rep.equals(daysList[3]))
+                        repeatList.setSelection(3);
+                    if(rep.equals(daysList[4]))
+                        repeatList.setSelection(4);
+                    if(rep.equals(daysList[5]))
+                        repeatList.setSelection(5);
+                    if(rep.equals(daysList[6]))
+                        repeatList.setSelection(6);
                     countupButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -588,8 +625,6 @@ public class TaskEditActivity extends Activity {
                 cursor.moveToFirst();
 
                 String selectedImagePath = cursor.getString(column_index);
-                // filename=selectedImagePath.substring(selectedImagePath.lastIndexOf("/") + 1);
-                //resId = getResources().getIdentifier(filename , "drawable", getPackageName());
                 Bitmap bm;
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
