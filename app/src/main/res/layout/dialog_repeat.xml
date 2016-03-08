@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Repeat every"
+            android:textSize="25dp"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:text="+"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/countup_button"/>
+                <EditText
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1"
+                    android:textColor="#000000"
+                    android:background="@drawable/rounded_edittext"
+                    android:id="@+id/count_text"
+                    android:gravity="center"/>
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:text="-"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/countdown_button"/>
+            </LinearLayout>
+            <Spinner
+                android:layout_width="170dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="20dp"
+                android:id="@+id/daylist"
+                android:gravity="center"
+                android:spinnerMode="dropdown"></Spinner>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Don't Repeat"
+                android:id="@+id/repeat_button"/>
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="50dp"
+                android:text="OK"
+                android:id="@+id/ok_button"/>
+        </LinearLayout>
+</LinearLayout>
+    </ScrollView>

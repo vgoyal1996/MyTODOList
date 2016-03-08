@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#BDBDBD">
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sort_group">
+
+        <RadioButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by priority"
+            android:gravity="end|center"
+            android:layout_gravity="right"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_marginTop="30dp"
+            android:drawablePadding="100dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:id="@+id/priority_sort"/>
+        <RadioButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by last modified"
+            android:gravity="end|center"
+            android:layout_gravity="right"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="33dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:id="@+id/modified_sort"/>
+        <RadioButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by title"
+            android:gravity="end|center"
+            android:layout_gravity="right"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="137dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:id="@+id/title_sort"/>
+        <RadioButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by last created"
+            android:gravity="end|center"
+            android:layout_gravity="right"
+            android:textColor="#000000"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:drawablePadding="50dp"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:drawableEnd="@android:drawable/btn_radio"
+            android:id="@+id/created_sort"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="cancel"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:background="#BDBDBD"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:id="@+id/cancel_button"/>
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="sort"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="30dp"
+            android:background="#BDBDBD"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:id="@+id/sort_button"/>
+    </LinearLayout>
+
+</LinearLayout>
+    </ScrollView>

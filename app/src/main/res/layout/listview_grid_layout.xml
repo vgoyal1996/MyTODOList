@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/grid_border"
+    android:id="@+id/grid_linear_layout">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_marginTop="5dp"
+        android:text="sample text"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:id="@+id/grid_taskname"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="creation Date:30/11/16"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textStyle="bold|normal"
+        android:id="@+id/grid_createdate"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="End Date:30/11/16"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textStyle="bold|normal"
+        android:id="@+id/grid_enddate"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/camera"
+        android:id="@+id/grid_taskimage"/>
+
+</LinearLayout>

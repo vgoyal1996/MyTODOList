@@ -1,0 +1,314 @@
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        tools:context="com.example.vipul.mytodolist.NewTaskActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Task name"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:textSize="20sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="name"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_edittext"
+                android:id="@+id/edit_task_name_edittext"
+                android:gravity="center"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"/>
+
+            <EditText
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="5dp"
+                android:hint="Date"
+                android:gravity="center"
+                android:id="@+id/edit_from_date_text"
+                android:textColor="#000000"
+                android:inputType="date"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To"
+                android:textSize="20sp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp" />
+
+            <EditText
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="5dp"
+                android:hint="Date"
+                android:inputType="date"
+                android:gravity="center"
+                android:id="@+id/edit_to_date_text"
+                android:textColor="#000000"
+                android:layout_marginEnd="5dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="70dp"
+                android:text="Start Time"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_edittext"
+                android:hint="start time"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:id="@+id/edit_start_time_text"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="70dp"
+                android:text="Finish Time"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_edittext"
+                android:hint="finish time"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:id="@+id/edit_finish_time_text"/>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="60dp"
+            android:text="Repeat Task"
+            android:textSize="20sp"
+            android:id="@+id/edit_repeat_checkbox"
+            android:paddingLeft="50dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/repeat_radiobox">
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:text="Daily"
+                android:id="@+id/edit_daily_button"
+                android:textSize="20sp"
+                android:paddingLeft="20dp"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:text="Weekly"
+                android:textSize="20sp"
+                android:paddingLeft="20dp"
+                android:id="@+id/edit_weekly_button"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:text="Monthly"
+                android:textSize="20sp"
+                android:paddingLeft="20dp"
+                android:id="@+id/edit_monthly_button"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:text="Yearly"
+                android:textSize="20sp"
+                android:paddingLeft="20dp"
+                android:id="@+id/edit_yearly_button"/>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:text="Other"
+                android:textSize="20sp"
+                android:paddingLeft="20dp"
+                android:id="@+id/edit_other_button"/>
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/rounded_edittext"
+                android:id="@+id/edit_description_text"
+                android:textColor="#000000"
+                android:hint="Description"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="5dp"
+                android:text="Priority"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:text="*"
+                android:textSize="30sp"
+                android:textColor="#01DF01"
+                android:id="@+id/edit_priority1"/>
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:text="**"
+                android:textSize="30sp"
+                android:textColor="#FFFFFF"
+                android:id="@+id/edit_priority2"/>
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:text="***"
+                android:textSize="30sp"
+                android:textColor="#FE2E2E"
+                android:id="@+id/edit_priority3"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="30dp"
+                android:text="Attach Picture"
+                android:textSize="20sp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/edit_attach_image"
+                    android:background="#424242"
+                    android:src="@drawable/camera"
+                    android:adjustViewBounds="true"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="60dp"
+            android:text="Set Reminder"
+            android:textSize="20sp"
+            android:id="@+id/edit_reminder_checkbox"
+            android:paddingStart="50dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="120dp"
+            android:text="Update Task"
+            android:gravity="center"
+            android:background="#CC0000"
+            android:onClick="updateTask"/>
+
+    </LinearLayout>
+</ScrollView>

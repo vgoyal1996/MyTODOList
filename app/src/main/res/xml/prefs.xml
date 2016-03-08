@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:summary="general information"
+        android:title="General">
+        <CheckBoxPreference
+            android:key="@string/pref_key_vibrate"
+            android:title="@string/pref_value_vibrate"
+            android:summary="enabled"
+            android:defaultValue="true"/>
+        <RingtonePreference
+            android:key="@string/pref_key_ringtone"
+            android:title="@string/pref_value_ringtone"
+            android:summary="ringtone"
+            android:ringtoneType="notification"
+            android:showDefault="true"
+            android:defaultValue="content://settings/system/notification_sound"/>
+        <ListPreference
+            android:key="@string/pref_key_view"
+            android:title="@string/pref_value_view"
+            android:entries="@array/view_options"
+            android:entryValues="@array/view_options_values"
+            android:summary="change task display"
+            android:defaultValue="1."/>
+        <Preference
+            android:key="@string/pref_key_snooze"
+            android:title="@string/pref_value_snooze"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Quiet Hours">
+        <CheckBoxPreference
+            android:key="@string/pref_key_quiet_hours_vibrate_and_sound"
+            android:title="@string/pref_value_quiet_hours_vibrate_and_sound"
+            android:summary="enabled"
+            android:defaultValue="true"/>
+        <Preference
+            android:key="@string/pref_key_quiet_hours_start"
+            android:title="@string/pref_value_quiet_hours_start"
+            android:defaultValue="12:00"/>
+        <Preference
+            android:key="@string/pref_key_quiet_hours_end"
+            android:title="@string/pref_value_quiet_hours_end"
+            android:defaultValue="15:00"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
