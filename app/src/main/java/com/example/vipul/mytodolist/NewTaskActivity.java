@@ -59,7 +59,6 @@ public class NewTaskActivity extends Activity {
     private TextView prior1;
     private TextView prior2;
     private TextView prior3;
-    private AlertDialog dialog;
     private static final int REQUEST_CAMERA=1;
     private static final int SELECT_FILE=2;
     private ImageView ivImage;
@@ -80,15 +79,12 @@ public class NewTaskActivity extends Activity {
     private RadioButton weekly;
     private RadioButton monthly;
     private RadioButton yearly;
-    private String repeattime;
     private String rep;
     private EditText descriptiontext;
     private String description;
     private int priority=1;
-    private String filename;
     private byte[] finalImage = null;
     private boolean isReminderSet;
-    //public static HashMap<Integer,TaskCountDown> taskCounters = new HashMap<>();
 
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -188,7 +184,6 @@ public class NewTaskActivity extends Activity {
 
         descriptiontext = (EditText)findViewById(R.id.description_text);
         ivImage = (ImageView)findViewById(R.id.attach_image);
-        //radioGroup = (RadioGroup)findViewById(R.id.reminder_radiobox);
         other = (RadioButton)findViewById(R.id.other_button);
         daily = (RadioButton)findViewById(R.id.daily_button);
         weekly = (RadioButton)findViewById(R.id.weekly_button);
@@ -198,7 +193,6 @@ public class NewTaskActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    //AlertDialog.Builder builder = new AlertDialog.Builder(NewTaskActivity.this);
                     final Dialog dialog = new Dialog(NewTaskActivity.this);
                     dialog.setContentView(R.layout.dialog_repeat);
                     final Spinner repeatList = (Spinner) dialog.findViewById(R.id.daylist);
@@ -320,12 +314,6 @@ public class NewTaskActivity extends Activity {
         timefinish = finishTimeText.getText().toString();
         isrepeating = checkBox.isChecked();
         Calendar c = Calendar.getInstance();
-        /*SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
-        try {
-            c.setTime(dateFormat.parse(from));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         String s = to + " " + timefinish + ":00";
         try{
@@ -335,23 +323,18 @@ public class NewTaskActivity extends Activity {
         }
         if(isrepeating){
             if(daily.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.DAY_OF_MONTH,1);
             }
             else if(weekly.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.DAY_OF_MONTH,7);
             }
             else if(monthly.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.MONTH,1);
             }
             else if(yearly.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 c.add(Calendar.YEAR,1);
             }
             else if(other.isChecked()){
-                //Calendar c = Calendar.getInstance();
                 if(rep.equals("second(s)")){
                     c.add(Calendar.SECOND,countday);
                 }
@@ -380,7 +363,6 @@ public class NewTaskActivity extends Activity {
         SQLiteOpenHelper todoDatabaseHelper = new TODOListDatabaseHelper(this);
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
         insertTask(db, name, from, to, time,timefinish, isrepeating, c, description, priority, finalImage, isReminderSet);
-        //Toast.makeText(this,"inserted",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -411,7 +393,6 @@ public class NewTaskActivity extends Activity {
             rp=0;
         if(isReminderSet)
             sr=1;
-        //MyObject ob = new MyObject((int)r,priority,taskName,Calendar.getInstance().toString(),startDate,endDate,startTime,finishTime,rp,date,description,fi,sr);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date startDateAndTime = null,finishTimeAndDate = null;
         try {
@@ -421,28 +402,21 @@ public class NewTaskActivity extends Activity {
             e.printStackTrace();
         }
         Intent i = new Intent(this,TimerService.class);
-        //TaskCountDown tcd = null;
         if((startDateAndTime.getTime()-(new Date().getTime()))>0){
             i.putExtra(TimerService.EXTRA_SERVICE_SECONDS,(startDateAndTime.getTime()-(new Date().getTime())));
             i.putExtra(TimerService.EXTRA_SERVICE_FLAG,1);
-            //tcd = new TaskCountDown((startDateAndTime.getTime()-(new Date().getTime())),1000,1,isReminderSet,taskName,priority,r);
         }
         else if(startDateAndTime.getTime()-(new Date().getTime())<=0){
             i.putExtra(TimerService.EXTRA_SERVICE_SECONDS,finishTimeAndDate.getTime()-(new Date().getTime()));
             i.putExtra(TimerService.EXTRA_SERVICE_FLAG,2);
-            //tcd = new TaskCountDown(finishTimeAndDate.getTime()-(new Date().getTime()),1000,2,isReminderSet,taskName,priority,r);
         }
-        //tcd.start();
-
 
         i.putExtra(TimerService.EXTRA_SERVICE_ROW,r);
-        //i.putExtra(TimerService.EXTRA_SERVICE_COUNTDOWN,tcd);
         i.putExtra(TimerService.EXTRA_SERVICE_COUNTDOWN_INTERVAL,(long)1000);
         i.putExtra(TimerService.EXTRA_SERVICE_PRIORITY,priority);
         i.putExtra(TimerService.EXTRA_SERVICE_REMINDER,isReminderSet);
         i.putExtra(TimerService.EXTRA_SERVICE_TASKNAME, taskName);
         startService(i);
-        //taskCounters.put(r,tcd);
         db.close();
     }
 
@@ -512,8 +486,6 @@ public class NewTaskActivity extends Activity {
                 cursor.moveToFirst();
 
                 String selectedImagePath = cursor.getString(column_index);
-               // filename=selectedImagePath.substring(selectedImagePath.lastIndexOf("/") + 1);
-                //resId = getResources().getIdentifier(filename , "drawable", getPackageName());
                 Bitmap bm;
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
