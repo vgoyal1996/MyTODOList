@@ -178,7 +178,7 @@ public class MainActivity extends Activity {
                     Toast.makeText(MainActivity.this, "No Results Found", Toast.LENGTH_SHORT).show();
                 else {
                     Intent intent = new Intent(MainActivity.this, SearchResultListviewActivity.class);
-                    intent.putExtra("ArrayList", nameList);
+                    intent.putParcelableArrayListExtra("ArrayList", nameList);
                     startActivity(intent);
                 }
             }
@@ -200,7 +200,10 @@ public class MainActivity extends Activity {
                 searchButton.setEnabled(true);
                 nameList = new ArrayList<MyObject>();
                 String text = searchText.getText().toString().toLowerCase(Locale.getDefault());
-                nameList = taskAdapter.filter(text,nameList);
+                if(text.equals(""))
+                    searchButton.setEnabled(false);
+                else
+                    nameList = taskAdapter.filter(text, nameList);
             }
         });
     }
@@ -474,7 +477,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class UpdateTaskListTask extends AsyncTask<Void,Void,Cursor> {
+    private class UpdateTaskListTask extends AsyncTask<Void,Void,Void> {
 
         @Override
         protected void onPreExecute() {
@@ -482,16 +485,10 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        protected Cursor doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(MainActivity.this);
             db = taskDatabaseHelper.getReadableDatabase();
             Cursor cursor = db.query("NEWTASK4", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","START_TIME","END_TIME","IMAGE","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION"}, null, null, null, null, "_id DESC");
-            return cursor;
-        }
-
-        @Override
-        protected void onPostExecute(Cursor cursor) {
-            super.onPostExecute(cursor);
             taskarrayRunning = new ArrayList<MyObject>();
             taskArrayUpcoming = new ArrayList<MyObject>();
             taskArrayCompleted = new ArrayList<MyObject>();
@@ -504,7 +501,6 @@ public class MainActivity extends Activity {
                 try {
                     start = f.parse(cursor.getString(4)+" "+cursor.getString(6));
                     end = f.parse(cursor.getString(5)+" "+cursor.getString(7));
-                    //end = f.parse(cursor.getString(4)+" "+cursor.getString(6));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -516,6 +512,13 @@ public class MainActivity extends Activity {
                 else
                     taskarrayRunning.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11)));
             }
+            cursor.close();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void params) {
+            super.onPostExecute(params);
             taskAdapter = new TaskAdapter(MainActivity.this,R.layout.listview_layout,taskArray);
             taskAdapterRunning = new TaskAdapter(MainActivity.this,R.layout.listview_layout,taskarrayRunning);
             taskAdapterCompleted = new TaskAdapter(MainActivity.this,R.layout.listview_layout,taskArrayCompleted);
@@ -523,7 +526,6 @@ public class MainActivity extends Activity {
             taskListRunning.setAdapter(taskAdapterRunning);
             taskListCompleted.setAdapter(taskAdapterCompleted);
             taskListUpcoming.setAdapter(taskAdapterUpcoming);
-            cursor.close();
             db.close();
             UpdateTimers();
         }

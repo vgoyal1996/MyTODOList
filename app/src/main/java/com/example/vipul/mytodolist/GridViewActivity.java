@@ -174,7 +174,7 @@ public class GridViewActivity extends Activity {
                     Toast.makeText(GridViewActivity.this, "No Results Found", Toast.LENGTH_SHORT).show();
                 else {
                     Intent intent = new Intent(GridViewActivity.this, SearchResultGridViewActivity.class);
-                    intent.putExtra("ArrayList2", nameList);
+                    intent.putParcelableArrayListExtra("ArrayList2", nameList);
                     startActivity(intent);
                 }
             }
@@ -258,12 +258,10 @@ public class GridViewActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(GridViewActivity.this, TaskDetailActivity.class);
-            //int c = taskList.getAdapter().getCount();
             int c = taskarrayRunning.get(position).getId();
             intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            //Toast.makeText(MainActivity.this,"tttt", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -272,12 +270,10 @@ public class GridViewActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(GridViewActivity.this, TaskDetailActivity.class);
-            //int c = taskList.getAdapter().getCount();
             int c = taskarrayCompleted.get(position).getId();
             intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            //Toast.makeText(MainActivity.this,"tttt", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -286,12 +282,10 @@ public class GridViewActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(GridViewActivity.this, TaskDetailActivity.class);
-            //int c = taskList.getAdapter().getCount();
             int c = taskarrayUpcoming.get(position).getId();
             intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            //Toast.makeText(MainActivity.this,"tttt", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -436,7 +430,7 @@ public class GridViewActivity extends Activity {
         }
     }
 
-    private class UpdateTaskListTask extends AsyncTask<Void,Void,Cursor> {
+    private class UpdateTaskListTask extends AsyncTask<Void,Void,Void> {
 
         @Override
         protected void onPreExecute() {
@@ -444,16 +438,10 @@ public class GridViewActivity extends Activity {
         }
 
         @Override
-        protected Cursor doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(GridViewActivity.this);
             db = taskDatabaseHelper.getReadableDatabase();
             Cursor cursor = db.query("NEWTASK4", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","IMAGE","START_TIME","END_TIME","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION"}, null, null, null, null, "_id DESC");
-            return cursor;
-        }
-
-        @Override
-        protected void onPostExecute(Cursor cursor) {
-            super.onPostExecute(cursor);
             taskarrayRunning = new ArrayList<MyObject>();
             taskarrayCompleted = new ArrayList<MyObject>();
             taskarrayUpcoming = new ArrayList<MyObject>();
@@ -477,6 +465,13 @@ public class GridViewActivity extends Activity {
                 else
                     taskarrayRunning.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(7),cursor.getString(8),cursor.getInt(9),cursor.getString(10),cursor.getString(12),image,cursor.getInt(11)));
             }
+            cursor.close();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void params) {
+            super.onPostExecute(params);
             taskAdapter = new GridAdapter(GridViewActivity.this,R.layout.listview_grid_layout,taskArray);
             taskAdapterRunning = new GridAdapter(GridViewActivity.this,R.layout.listview_grid_layout,taskarrayRunning);
             taskAdapterCompleted = new GridAdapter(GridViewActivity.this,R.layout.listview_grid_layout,taskarrayCompleted);
@@ -484,7 +479,6 @@ public class GridViewActivity extends Activity {
             taskListRunning.setAdapter(taskAdapterRunning);
             taskListCompleted.setAdapter(taskAdapterCompleted);
             taskListUpcoming.setAdapter(taskAdapterUpcoming);
-            cursor.close();
             db.close();
             UpdateTimers();
         }

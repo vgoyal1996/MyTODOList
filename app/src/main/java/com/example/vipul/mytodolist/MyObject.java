@@ -8,6 +8,7 @@ import android.os.Parcelable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MyObject implements Parcelable {
@@ -84,20 +85,25 @@ public class MyObject implements Parcelable {
         task = in.readString();
         prior = in.readInt();
         id = in.readInt();
-        description = in.readString();
-        isrepeating = in.readInt() == 1;
-        setReminder = in.readInt() == 1;
-        startDate = in.readString();
-        endDate = in.readString();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         try {
             modified = formatter.parse(in.readString());
-            startDateAndTime = formatter.parse(in.readString());
-            endDateAndTime = formatter.parse(in.readString());
-            repeatDate = formatter.parse(in.readString());
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        endDate = in.readString();
+        startDate = in.readString();
+        try {
+            endDateAndTime = formatter.parse(in.readString());
+            startDateAndTime = formatter.parse(in.readString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        description = in.readString();
+        isrepeating = in.readInt() == 1;
+        setReminder = in.readInt() == 1;
+        image = in.createByteArray();
+
     }
 
     public Date getStartDateAndTime() {
@@ -162,13 +168,19 @@ public class MyObject implements Parcelable {
         dest.writeString(task);
         dest.writeInt(prior);
         dest.writeInt(id);
-        dest.writeString(modified.toString());
+        Calendar mod = Calendar.getInstance();
+        mod.setTime(modified);
+        dest.writeString(mod.get(Calendar.DAY_OF_MONTH) + "/" + mod.get(Calendar.MONTH) + "/" + mod.get(Calendar.YEAR) + " " + mod.get(Calendar.HOUR_OF_DAY) + ":" + mod.get(Calendar.MINUTE) + ":" + mod.get(Calendar.SECOND));
         dest.writeString(endDate);
         dest.writeString(startDate);
-//        dest.writeString(endDateAndTime.toString());
-//        dest.writeString(startDateAndTime.toString());
-//        dest.writeString(description);
-        /*if(isrepeating)
+        Calendar start = Calendar.getInstance();
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDateAndTime);
+        start.setTime(startDateAndTime);
+        dest.writeString(end.get(Calendar.DAY_OF_MONTH) + "/" + end.get(Calendar.MONTH) + "/" + end.get(Calendar.YEAR) + " " + end.get(Calendar.HOUR_OF_DAY) + ":" + end.get(Calendar.MINUTE) + ":" + end.get(Calendar.SECOND));
+        dest.writeString(start.get(Calendar.DAY_OF_MONTH) + "/" + start.get(Calendar.MONTH) + "/" + start.get(Calendar.YEAR) + " " + start.get(Calendar.HOUR_OF_DAY) + ":" + start.get(Calendar.MINUTE) + ":" + start.get(Calendar.SECOND));
+        dest.writeString(description);
+        if(isrepeating)
             dest.writeInt(1);
         else
             dest.writeInt(0);
@@ -176,7 +188,7 @@ public class MyObject implements Parcelable {
             dest.writeInt(1);
         else
             dest.writeInt(0);
-        dest.writeByteArray(image);*/
+        dest.writeByteArray(image);
     }
 
     public static final Parcelable.Creator<MyObject> CREATOR = new Parcelable.Creator<MyObject>() {
