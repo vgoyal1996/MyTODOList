@@ -3,13 +3,110 @@
     android:layout_height="match_parent"
     tools:context="com.example.vipul.mytodolist.SearchResultGridViewActivity">
 
-    <GridView
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <TabHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
-        android:horizontalSpacing="5dp"
-        android:verticalSpacing="5dp"
-        android:id="@+id/task_grid_search">
-    </GridView>
+        android:id="@+id/tabHost2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TabWidget>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/upcoming_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <android.support.v4.widget.SwipeRefreshLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/swipe_refresh_upcoming">
+                            <GridView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:numColumns="2"
+                                android:horizontalSpacing="5dp"
+                                android:verticalSpacing="5dp"
+                                android:id="@+id/task_grid_upcoming">
+                            </GridView>
+                        </android.support.v4.widget.SwipeRefreshLayout>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/running_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <android.support.v4.widget.SwipeRefreshLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/swipe_refresh_running">
+                            <GridView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:numColumns="2"
+                                android:horizontalSpacing="5dp"
+                                android:verticalSpacing="5dp"
+                                android:id="@+id/task_grid_running">
+                            </GridView>
+                        </android.support.v4.widget.SwipeRefreshLayout>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/completed_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <android.support.v4.widget.SwipeRefreshLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/swipe_refresh_completed">
+                            <GridView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:numColumns="2"
+                                android:horizontalSpacing="5dp"
+                                android:verticalSpacing="5dp"
+                                android:id="@+id/task_grid_completed">
+                            </GridView>
+                        </android.support.v4.widget.SwipeRefreshLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+    </FrameLayout>
 
 </RelativeLayout>
