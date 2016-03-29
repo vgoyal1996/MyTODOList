@@ -305,6 +305,11 @@ public class NewTaskActivity extends Activity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.anim_leave,R.anim.anim_enter);
+    }
 
     public void createNewTask(View v){
         name = nameText.getText().toString();
@@ -366,6 +371,7 @@ public class NewTaskActivity extends Activity {
         Intent intent = new Intent(this,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     public void insertTask(SQLiteDatabase db,String taskName, String startDate, String endDate, String startTime,String finishTime, boolean repeatTask,Calendar repeatAfterDate, String description, int priority, byte[] fi, boolean isReminderSet){

@@ -1,5 +1,6 @@
 package com.example.vipul.mytodolist;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -65,7 +66,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getActionBar().setDisplayShowHomeEnabled(true);
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         tabHost = (TabHost)findViewById(R.id.tabHost);
         tabHost.setup();
@@ -86,7 +89,7 @@ public class MainActivity extends Activity {
         tabHost.addTab(tabSpec);
         tabHost.setCurrentTab(1);
 
-        final View mainView = findViewById(android.R.id.content);
+        //final View mainView = findViewById(android.R.id.content);
 
         //this.gestureDetector = new GestureDetectorCompat(this,new SwipeGestureDetector());
         //gestureDetector.setOnDoubleTapListener(new SwipeGestureDetector(this));
@@ -180,6 +183,7 @@ public class MainActivity extends Activity {
                     Intent intent = new Intent(MainActivity.this, SearchResultListviewActivity.class);
                     intent.putParcelableArrayListExtra("ArrayList", nameList);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
             }
         });
@@ -261,6 +265,7 @@ public class MainActivity extends Activity {
             //intent.putExtra(TaskDetailActivity.EXTRA_OBJECT,taskArray.get(position));
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             //Toast.makeText(MainActivity.this,"tttt", Toast.LENGTH_SHORT).show();
         }
     }
@@ -277,6 +282,7 @@ public class MainActivity extends Activity {
             //intent.putExtra(TaskDetailActivity.EXTRA_OBJECT,taskArray.get(position));
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             //Toast.makeText(MainActivity.this,"tttt", Toast.LENGTH_SHORT).show();
         }
     }
@@ -293,6 +299,7 @@ public class MainActivity extends Activity {
             ///intent.putExtra(TaskDetailActivity.EXTRA_ARRAYLIST,taskArray);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             //Toast.makeText(MainActivity.this,"tttt", Toast.LENGTH_SHORT).show();
         }
     }
@@ -337,6 +344,7 @@ public class MainActivity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(TaskEditActivity.EXTRA_ROW, rowId);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     }
                 }
             });
@@ -384,6 +392,7 @@ public class MainActivity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(TaskEditActivity.EXTRA_ROW, rowId);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     }
                 }
             });
@@ -470,6 +479,7 @@ public class MainActivity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(TaskEditActivity.EXTRA_ROW, rowId);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     }
                 }
             });
@@ -546,6 +556,7 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this,NewTaskActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
 

@@ -101,6 +101,7 @@ public class SearchResultGridViewActivity extends Activity {
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -112,6 +113,7 @@ public class SearchResultGridViewActivity extends Activity {
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -123,6 +125,7 @@ public class SearchResultGridViewActivity extends Activity {
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
     }
@@ -217,6 +220,8 @@ public class SearchResultGridViewActivity extends Activity {
             return null;
         }
 
+
+
         @Override
         protected void onPostExecute(Void params) {
             super.onPostExecute(params);
@@ -230,4 +235,9 @@ public class SearchResultGridViewActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.anim_leave, R.anim.anim_enter);
+    }
 }

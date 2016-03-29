@@ -194,6 +194,12 @@ public class TaskDetailActivity extends Activity  {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.anim_leave, R.anim.anim_enter);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
     }

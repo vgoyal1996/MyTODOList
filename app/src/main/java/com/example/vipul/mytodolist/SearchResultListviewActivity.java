@@ -102,6 +102,7 @@ public class SearchResultListviewActivity extends Activity {
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -113,6 +114,7 @@ public class SearchResultListviewActivity extends Activity {
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -124,6 +126,7 @@ public class SearchResultListviewActivity extends Activity {
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
     }
@@ -132,6 +135,12 @@ public class SearchResultListviewActivity extends Activity {
     public boolean onTouchEvent(MotionEvent event) {
         this.gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.anim_leave, R.anim.anim_enter);
     }
 
     class MyGestureDetector extends GestureDetector.SimpleOnGestureListener{

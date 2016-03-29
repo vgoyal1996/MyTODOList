@@ -176,6 +176,7 @@ public class GridViewActivity extends Activity {
                     Intent intent = new Intent(GridViewActivity.this, SearchResultGridViewActivity.class);
                     intent.putParcelableArrayListExtra("ArrayList2", nameList);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
             }
         });
@@ -262,6 +263,7 @@ public class GridViewActivity extends Activity {
             intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 
@@ -274,6 +276,7 @@ public class GridViewActivity extends Activity {
             intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 
@@ -286,6 +289,7 @@ public class GridViewActivity extends Activity {
             intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 
@@ -329,6 +333,7 @@ public class GridViewActivity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(TaskEditActivity.EXTRA_ROW, rowId);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     }
                 }
             });
@@ -376,6 +381,7 @@ public class GridViewActivity extends Activity {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(TaskEditActivity.EXTRA_ROW, rowId);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     }
                 }
             });
@@ -535,6 +541,7 @@ public class GridViewActivity extends Activity {
         Intent intent = new Intent(this,NewTaskActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override

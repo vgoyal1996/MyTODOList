@@ -243,7 +243,11 @@ public class TaskEditActivity extends Activity {
         db.close();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.anim_leave, R.anim.anim_enter);
+    }
 
     public void updateTask(View v){
         String name = editname.getText().toString();
