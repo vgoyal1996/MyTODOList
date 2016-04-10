@@ -26,6 +26,8 @@ public class MyObject implements Parcelable {
     private byte[] image;
     private String description;
     private Bitmap bitmap=null;
+    private String repeatInterval;
+    private int calendarEventId;
 
     public MyObject(int id, int prior, String task, String modified) {
         this.id = id;
@@ -61,6 +63,32 @@ public class MyObject implements Parcelable {
             bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
         }
         this.description = description;
+    }
+
+    public MyObject(int id, int prior, String task, String modified, String startDate, String endDate, String startTime, String endTime, int repeatTask, String repeatDate, String description, byte[] image, int setReminder, String repeatInterval, int calendarEventId){
+        this.id = id;
+        this.prior = prior;
+        this.task = task;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        try {
+            this.modified = formatter.parse(modified);
+            startDateAndTime = formatter.parse(startDate+" "+startTime+":00");
+            endDateAndTime = formatter.parse(endDate+" "+endTime+":00");
+            this.repeatDate = formatter.parse(repeatDate+" "+startTime+":00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        isrepeating = repeatTask == 1;
+        this.setReminder = setReminder == 1;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        if(image!=null) {
+            this.image = image;
+            bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+        }
+        this.description = description;
+        this.repeatInterval = repeatInterval;
+        this.calendarEventId = calendarEventId;
     }
 
     public MyObject(int id, int prior, String task, String modified,String startDate,String endDate,byte[] image){

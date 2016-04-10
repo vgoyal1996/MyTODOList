@@ -40,7 +40,7 @@ public class CompleteAndRestartTaskService extends IntentService {
         m.cancel(TaskNotificationService.NOTIFICATION_ID);
         SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(this);
         SQLiteDatabase db = taskDatabaseHelper.getWritableDatabase();
-        Cursor cursor = db.query("NEWTASK4",new String[]{"REPEAT_TASK","REPEAT_AFTER","START_DATE","START_TIME","END_DATE","END_TIME","MODIFIED_DATE","TASK_NAME","PRIORITY"},"_id=?",new String[]{String.valueOf(row)},null,null,null);
+        Cursor cursor = db.query("NEWTASK6",new String[]{"REPEAT_TASK","REPEAT_AFTER","START_DATE","START_TIME","END_DATE","END_TIME","MODIFIED_DATE","TASK_NAME","PRIORITY","CALENDAR_EVENT_ID","DESCRIPTION"},"_id=?",new String[]{String.valueOf(row)},null,null,null);
         if(cursor.moveToNext()){
             if(cursor.getInt(0)==1){
                 Log.v("CompleteService",cursor.getString(7));
@@ -69,13 +69,7 @@ public class CompleteAndRestartTaskService extends IntentService {
                 int hour = end.get(Calendar.HOUR_OF_DAY)-start.get(Calendar.HOUR_OF_DAY);
                 if(hour<0)
                     hour=24+hour;
-                /*int day = start.getActualMaximum(Calendar.MONTH)-start.get(Calendar.DAY_OF_MONTH);
-                Calendar temp = start;
-                for(int i=start.get(Calendar.MONTH)+1;i<=end.get(Calendar.MONTH)-1;i++){
-                    temp.add(Calendar.MONTH,1);
-                    day+=temp.getActualMaximum(Calendar.MONTH);
-                }
-                day+=end.get(Calendar.DAY_OF_MONTH);*/
+
                 int day = end.get(Calendar.DAY_OF_MONTH)-start.get(Calendar.DAY_OF_MONTH);
                 if(day<0){
                     day = start.getActualMaximum(Calendar.DAY_OF_MONTH)-start.get(Calendar.DAY_OF_MONTH);
@@ -102,15 +96,12 @@ public class CompleteAndRestartTaskService extends IntentService {
                 time = start.get(Calendar.HOUR_OF_DAY)+":"+start.get(Calendar.MINUTE)+":"+start.get(Calendar.SECOND);
                 taskContents.put("END_DATE", date);
                 taskContents.put("END_TIME", time);
+                String endDateAndTime = date+" "+time;
 
-                /*TaskCountDown tcd = new TaskCountDown((start.getTimeInMillis()),1000,getApplicationContext(),1,true,cursor.getString(7),cursor.getInt(8),row);
-                tcd.start();
-                TimerService.taskCounters.put(row,tcd);*/
                 Intent i = new Intent(this,TimerService.class);
                 i.putExtra(TimerService.EXTRA_SERVICE_SECONDS, start.getTimeInMillis()-(Calendar.getInstance().getTimeInMillis()));
                 i.putExtra(TimerService.EXTRA_SERVICE_FLAG, 1);
                 i.putExtra(TimerService.EXTRA_SERVICE_ROW, row);
-                //i.putExtra(TimerService.EXTRA_SERVICE_COUNTDOWN,tcd);
                 i.putExtra(TimerService.EXTRA_SERVICE_COUNTDOWN_INTERVAL,(long)1000);
                 i.putExtra(TimerService.EXTRA_SERVICE_PRIORITY,cursor.getInt(8));
                 i.putExtra(TimerService.EXTRA_SERVICE_REMINDER,true);
@@ -128,19 +119,12 @@ public class CompleteAndRestartTaskService extends IntentService {
                 int hourrep = repeatDate.get(Calendar.HOUR_OF_DAY)-end.get(Calendar.HOUR_OF_DAY);
                 if(hourrep<0)
                     hourrep=24+hourrep;
-                /*int day = start.getActualMaximum(Calendar.MONTH)-start.get(Calendar.DAY_OF_MONTH);
-                Calendar temp = start;
-                for(int i=start.get(Calendar.MONTH)+1;i<=end.get(Calendar.MONTH)-1;i++){
-                    temp.add(Calendar.MONTH,1);
-                    day+=temp.getActualMaximum(Calendar.MONTH);
-                }
-                day+=end.get(Calendar.DAY_OF_MONTH);*/
                 int dayrep = repeatDate.get(Calendar.DAY_OF_MONTH)-end.get(Calendar.DAY_OF_MONTH);
                 if(dayrep<0){
                     dayrep = end.getActualMaximum(Calendar.DAY_OF_MONTH)-end.get(Calendar.DAY_OF_MONTH);
                     dayrep+=repeatDate.get(Calendar.DAY_OF_MONTH);
                 }
-                //Calendar current = Calendar.getInstance();
+
 
                 start.add(Calendar.YEAR, yearrep);
                 start.add(Calendar.MONTH, monthrep);
@@ -152,9 +136,10 @@ public class CompleteAndRestartTaskService extends IntentService {
                 date = start.get(Calendar.DAY_OF_MONTH)+"/"+temp+"/"+start.get(Calendar.YEAR)+" "+start.get(Calendar.HOUR_OF_DAY)+":"+start.get(Calendar.MINUTE)+":"+start.get(Calendar.SECOND);;
                 taskContents.put("REPEAT_AFTER", date);
                 Calendar c = Calendar.getInstance();
-                date = c.get(Calendar.DAY_OF_MONTH)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR)+" "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE)+":"+c.get(Calendar.SECOND);;
+                date = c.get(Calendar.DAY_OF_MONTH)+"/"+c.get(Calendar.MONTH)+"/"+c.get(Calendar.YEAR)+" "+c.get(Calendar.HOUR_OF_DAY)+":"+c.get(Calendar.MINUTE)+":"+c.get(Calendar.SECOND);
                 taskContents.put("MODIFIED_DATE", date);
-                db.update("NEWTASK4", taskContents, "_id=?", new String[]{String.valueOf(row)});
+                new CalendarTask(getApplicationContext()).UpdateEvent(cursor.getInt(9),cursor.getString(7),endDateAndTime,cursor.getString(10));
+                db.update("NEWTASK6", taskContents, "_id=?", new String[]{String.valueOf(row)});
             }
         }
         cursor.close();

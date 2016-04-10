@@ -329,12 +329,17 @@ public class MainActivity extends Activity {
                         try {
                             SQLiteOpenHelper taskHelper = new TODOListDatabaseHelper(MainActivity.this);
                             SQLiteDatabase database = taskHelper.getWritableDatabase();
-                            database.delete("NEWTASK4", "_id = ?", new String[]{Integer.toString(rowId)});
+                            Cursor c = db.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
+                            int eventId = 0;
+                            if(c.moveToNext())
+                                eventId = c.getInt(0);
+                            new CalendarTask(getApplicationContext()).deleteFromCalendar(eventId);
+                            database.delete("NEWTASK6", "_id = ?", new String[]{Integer.toString(rowId)});
                             if (TimerService.taskCounters.containsKey(rowId))
                                 TimerService.taskCounters.remove(rowId);
+                            c.close();
                             database.close();
                             Toast.makeText(MainActivity.this, "Task successfully deleted", Toast.LENGTH_SHORT).show();
-                            //actionRefresh();
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, "database unavailable", Toast.LENGTH_SHORT).show();
                         }
@@ -377,12 +382,17 @@ public class MainActivity extends Activity {
                         try {
                             SQLiteOpenHelper taskHelper = new TODOListDatabaseHelper(MainActivity.this);
                             SQLiteDatabase database = taskHelper.getWritableDatabase();
-                            database.delete("NEWTASK4", "_id = ?", new String[]{Integer.toString(rowId)});
+                            Cursor c = db.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
+                            int eventId = 0;
+                            if(c.moveToNext())
+                                eventId = c.getInt(0);
+                            new CalendarTask(getApplicationContext()).deleteFromCalendar(eventId);
+                            database.delete("NEWTASK6", "_id = ?", new String[]{Integer.toString(rowId)});
                             if (TimerService.taskCounters.containsKey(rowId))
                                 TimerService.taskCounters.remove(rowId);
+                            c.close();
                             database.close();
                             Toast.makeText(MainActivity.this, "Task successfully deleted", Toast.LENGTH_SHORT).show();
-                            //actionRefresh();
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, "database unavailable", Toast.LENGTH_SHORT).show();
                         }
@@ -464,12 +474,17 @@ public class MainActivity extends Activity {
                         try {
                             SQLiteOpenHelper taskHelper = new TODOListDatabaseHelper(MainActivity.this);
                             SQLiteDatabase database = taskHelper.getWritableDatabase();
-                            database.delete("NEWTASK4", "_id = ?", new String[]{Integer.toString(rowId)});
+                            Cursor c = db.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
+                            int eventId = 0;
+                            if(c.moveToNext())
+                                eventId = c.getInt(0);
+                            new CalendarTask(getApplicationContext()).deleteFromCalendar(eventId);
+                            database.delete("NEWTASK6", "_id = ?", new String[]{Integer.toString(rowId)});
                             if (TimerService.taskCounters.containsKey(rowId))
                                 TimerService.taskCounters.remove(rowId);
+                            c.close();
                             database.close();
                             Toast.makeText(MainActivity.this, "Task successfully deleted", Toast.LENGTH_SHORT).show();
-                            //actionRefresh();
                         } catch (Exception e) {
                             Toast.makeText(MainActivity.this, "database unavailable", Toast.LENGTH_SHORT).show();
                         }
@@ -498,7 +513,7 @@ public class MainActivity extends Activity {
         protected Void doInBackground(Void... params) {
             SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(MainActivity.this);
             db = taskDatabaseHelper.getReadableDatabase();
-            Cursor cursor = db.query("NEWTASK4", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","START_TIME","END_TIME","IMAGE","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION"}, null, null, null, null, "_id DESC");
+            Cursor cursor = db.query("NEWTASK6", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","START_TIME","END_TIME","IMAGE","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION","REPEAT_INTERVAL","CALENDAR_EVENT_ID"}, null, null, null, null, "_id DESC");
             taskarrayRunning = new ArrayList<MyObject>();
             taskArrayUpcoming = new ArrayList<MyObject>();
             taskArrayCompleted = new ArrayList<MyObject>();
@@ -514,13 +529,13 @@ public class MainActivity extends Activity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                taskArray.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11)));
+                taskArray.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11),cursor.getString(13),cursor.getInt(14)));
                 if(cur.compareTo(start)<0)
-                    taskArrayUpcoming.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11)));
+                    taskArrayUpcoming.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11),cursor.getString(13),cursor.getInt(14)));
                 else if(cur.compareTo(end)>0)
-                    taskArrayCompleted.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11)));
+                    taskArrayCompleted.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11),cursor.getString(13),cursor.getInt(14)));
                 else
-                    taskarrayRunning.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11)));
+                    taskarrayRunning.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getInt(9),cursor.getString(10),cursor.getString(12),cursor.getBlob(8),cursor.getInt(11),cursor.getString(13),cursor.getInt(14)));
             }
             cursor.close();
             return null;

@@ -319,6 +319,7 @@ public class NewTaskActivity extends Activity {
         timefinish = finishTimeText.getText().toString();
         isrepeating = checkBox.isChecked();
         Calendar c = Calendar.getInstance();
+        String repeatInterval = null;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         String s = to + " " + timefinish + ":00";
         try{
@@ -329,52 +330,64 @@ public class NewTaskActivity extends Activity {
         if(isrepeating){
             if(daily.isChecked()){
                 c.add(Calendar.DAY_OF_MONTH,1);
+                repeatInterval = ""+1+" "+"day";
             }
             else if(weekly.isChecked()){
                 c.add(Calendar.DAY_OF_MONTH,7);
+                repeatInterval = ""+1+" "+"week";
             }
             else if(monthly.isChecked()){
                 c.add(Calendar.MONTH,1);
+                repeatInterval = ""+1+" "+"month";
             }
             else if(yearly.isChecked()){
                 c.add(Calendar.YEAR,1);
+                repeatInterval = ""+1+" "+"year";
             }
             else if(other.isChecked()){
                 if(rep.equals("second(s)")){
                     c.add(Calendar.SECOND,countday);
+                    repeatInterval = ""+countday+" "+"second";
                 }
                 if(rep.equals("minute(s)")){
                     c.add(Calendar.MINUTE,countday);
+                    repeatInterval = ""+countday+" "+"minute";
                 }
                 if(rep.equals("hour(s)")){
                     c.add(Calendar.HOUR_OF_DAY,countday);
+                    repeatInterval = ""+countday+" "+"hour";
                 }
                 if(rep.equals("day(s)")){
                     c.add(Calendar.DAY_OF_MONTH,countday);
+                    repeatInterval = ""+countday+" "+"day";
                 }
                 if(rep.equals("week(s)")){
                     c.add(Calendar.DAY_OF_MONTH,7*countday);
+                    repeatInterval = ""+countday+" "+"week";
                 }
                 if(rep.equals("month(s)")){
                     c.add(Calendar.MONTH,countday);
+                    repeatInterval = ""+countday+" "+"month";
                 }
                 if(rep.equals("year(s)")){
                     c.add(Calendar.YEAR,countday);
+                    repeatInterval = ""+countday+" "+"year";
                 }
             }
         }
         description = descriptiontext.getText().toString();
         isReminderSet = reminderCheckBox.isChecked();
+        int calendarEventId = -1;
         SQLiteOpenHelper todoDatabaseHelper = new TODOListDatabaseHelper(this);
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
-        insertTask(db, name, from, to, time,timefinish, isrepeating, c, description, priority, finalImage, isReminderSet);
+        insertTask(db, name, from, to, time,timefinish, isrepeating, c, description, priority, finalImage, isReminderSet, repeatInterval, calendarEventId);
         Intent intent = new Intent(this,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-    public void insertTask(SQLiteDatabase db,String taskName, String startDate, String endDate, String startTime,String finishTime, boolean repeatTask,Calendar repeatAfterDate, String description, int priority, byte[] fi, boolean isReminderSet){
+    public void insertTask(SQLiteDatabase db,String taskName, String startDate, String endDate, String startTime,String finishTime, boolean repeatTask,Calendar repeatAfterDate, String description, int priority, byte[] fi, boolean isReminderSet, String repeatInterval, int calendarEventId){
         ContentValues taskValues = new ContentValues();
         taskValues.put("TASK_NAME",taskName);
         taskValues.put("START_DATE",startDate);
@@ -389,9 +402,11 @@ public class NewTaskActivity extends Activity {
         taskValues.put("PRIORITY",priority);
         taskValues.put("IMAGE", fi);
         taskValues.put("REMINDER", isReminderSet);
+        taskValues.put("REPEAT_INTERVAL",repeatInterval);
+        taskValues.put("CALENDAR_EVENT_ID",calendarEventId);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         taskValues.put("MODIFIED_DATE", dateFormat.format(Calendar.getInstance().getTime()));
-        int r = (int) db.insert("NEWTASK4", null, taskValues);
+        int r = (int) db.insert("NEWTASK6", null, taskValues);
         int rp,sr=0;
         if(repeatTask)
             rp=1;

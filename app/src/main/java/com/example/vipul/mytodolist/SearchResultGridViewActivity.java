@@ -188,7 +188,7 @@ public class SearchResultGridViewActivity extends Activity {
         protected Void doInBackground(Void... params) {
             SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(SearchResultGridViewActivity.this);
             db = taskDatabaseHelper.getReadableDatabase();
-            Cursor cursor = db.query("NEWTASK4", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","IMAGE","START_TIME","END_TIME","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION"}, null, null, null, null, "_id DESC");
+            Cursor cursor = db.query("NEWTASK6", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","IMAGE","START_TIME","END_TIME","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION"}, null, null, null, null, "_id DESC");
             taskArrayCompleted = new ArrayList<MyObject>();
             taskArrayRunning = new ArrayList<MyObject>();
             taskArrayUpcoming = new ArrayList<MyObject>();

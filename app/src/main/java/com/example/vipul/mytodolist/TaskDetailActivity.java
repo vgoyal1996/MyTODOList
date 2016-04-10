@@ -2,6 +2,8 @@ package com.example.vipul.mytodolist;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,11 +17,17 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -40,14 +48,18 @@ public class TaskDetailActivity extends Activity  {
     private int row;
     private boolean setReminder;
     private int p;
-    private int isRepeating;
+    private boolean isRepeating;
     private String repeatDate;
     private String startTimeAndDate;
     private String endTimeAndDate;
     Date endDate;
+    private String repeatInterval;
     private Bitmap bm=null;
     private String startDateText;
     private String description = null;
+    private CalendarTask ctask;
+    private int eventId;
+    private ArrayList<CalendarTask.CalendarObject> list;
 
 
     @Override
@@ -56,9 +68,91 @@ public class TaskDetailActivity extends Activity  {
         setContentView(R.layout.activity_task_detail);
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        Button calendarAdd = (Button) findViewById(R.id.calendar_add);
+        Button calendarDelete = (Button) findViewById(R.id.calendar_delete);
         row = (int) getIntent().getExtras().get(EXTRA_ROW);
         new getRowInfoTask().execute(row);
+
+
+        ctask = new CalendarTask(getApplicationContext());
+        list = new ArrayList<>();
+        calendarAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(eventId!=-1)
+                    Toast.makeText(TaskDetailActivity.this,"Task already present in calendar",Toast.LENGTH_SHORT).show();
+                else {
+                    list = ctask.isCalendarAvailable();
+                    if (list.size() == 0)
+                        Toast.makeText(TaskDetailActivity.this, "Calendar not available", Toast.LENGTH_LONG).show();
+                    else if (list.size() == 1) {
+                        eventId = (int) ctask.addToCalendar(list.get(0).getId(), 0, taskname, endTimeAndDate, description, setReminder);
+                        SQLiteOpenHelper helper = new TODOListDatabaseHelper(TaskDetailActivity.this);
+                        db = helper.getWritableDatabase();
+                        ContentValues val = new ContentValues();
+                        val.put("CALENDAR_EVENT_ID", eventId);
+                        db.update("NEWTASK6", val, "_id=?", new String[]{"" + row});
+                        db.close();
+                    } else {
+                        final Dialog dialog = new Dialog(TaskDetailActivity.this);
+                        dialog.setContentView(R.layout.dialog_layout);
+                        dialog.setTitle("Choose your Calendar");
+                        final String items[] = new String[list.size() + 1];
+                        int i = 0;
+                        for (i = 1; i <= list.size(); i++) {
+                            items[i - 1] = list.get(i - 1).getName();
+                        }
+                        items[i - 1] = "cancel";
+                        ListView lv = (ListView) dialog.findViewById(R.id.listview1);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(TaskDetailActivity.this, android.R.layout.simple_list_item_1, items);
+                        lv.setAdapter(adapter);
+                        dialog.show();
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (items[position].equals("cancel"))
+                                    dialog.dismiss();
+                                else {
+                                    dialog.dismiss();
+                                    eventId = (int) ctask.addToCalendar(list.get(position).getId(), position, taskname, endTimeAndDate, description, setReminder);
+                                    SQLiteOpenHelper helper = new TODOListDatabaseHelper(TaskDetailActivity.this);
+                                    db = helper.getWritableDatabase();
+                                    ContentValues val = new ContentValues();
+                                    val.put("CALENDAR_EVENT_ID", eventId);
+                                    db.update("NEWTASK6", val, "_id=?", new String[]{"" + row});
+                                    db.close();
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
+        calendarDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SQLiteOpenHelper helper = new TODOListDatabaseHelper(TaskDetailActivity.this);
+                db = helper.getWritableDatabase();
+                Cursor c = db.query("NEWTASK6",new String[]{"CALENDAR_EVENT_ID"},"_id=?",new String[]{""+row},null,null,null);
+                if(c.moveToNext())
+                    eventId = c.getInt(0);
+                if(eventId!=-1) {
+                    eventId = ctask.deleteFromCalendar(eventId);
+                    ContentValues val = new ContentValues();
+                    val.put("CALENDAR_EVENT_ID", eventId);
+                    db.update("NEWTASK6", val, "_id=?", new String[]{"" + row});
+                    Toast.makeText(TaskDetailActivity.this,"Task removed successfully",Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(TaskDetailActivity.this,"Task not present in calendar",Toast.LENGTH_SHORT).show();
+                c.close();
+                db.close();
+            }
+        });
     }
+
 
     public void UpdateTextView(final TaskCountDown tcd){
         final Handler handler = new Handler();
@@ -110,7 +204,7 @@ public class TaskDetailActivity extends Activity  {
         protected Void doInBackground(Integer... params) {
             SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(TaskDetailActivity.this);
             db = taskDatabaseHelper.getReadableDatabase();
-            cursor = db.query("NEWTASK4",new String[]{"TASK_NAME","PRIORITY","IMAGE","DESCRIPTION","START_DATE","END_DATE","START_TIME","END_TIME","REMINDER","REPEAT_TASK","REPEAT_AFTER"},"_id = ?",new String[]{Integer.toString(params[0])},null,null,null);
+            cursor = db.query("NEWTASK6",new String[]{"TASK_NAME","PRIORITY","IMAGE","DESCRIPTION","START_DATE","END_DATE","START_TIME","END_TIME","REMINDER","REPEAT_TASK","REPEAT_AFTER","REPEAT_INTERVAL","CALENDAR_EVENT_ID"},"_id = ?",new String[]{Integer.toString(params[0])},null,null,null);
             try{
                 if(cursor.moveToFirst()) {
                     taskname = cursor.getString(0);
@@ -120,9 +214,9 @@ public class TaskDetailActivity extends Activity  {
                         byte[] bytes = cursor.getBlob(2);
                         bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     }
-                    isRepeating = cursor.getInt(9);
+                    isRepeating = cursor.getInt(9) == 1;
                     startDateText = cursor.getString(4);
-                    if (isRepeating == 1)
+                    if (isRepeating)
                         repeatDate = cursor.getString(10);
                     startTimeAndDate = cursor.getString(4) + " " + cursor.getString(6) + ":00";
                     endTimeAndDate = cursor.getString(5) + " " + cursor.getString(7) + ":00";
@@ -136,6 +230,8 @@ public class TaskDetailActivity extends Activity  {
                         e.printStackTrace();
                     }
                     description = cursor.getString(3);
+                    repeatInterval = cursor.getString(11);
+                    eventId = cursor.getInt(12);
                 }
             }catch (Exception e){
                 e.printStackTrace();

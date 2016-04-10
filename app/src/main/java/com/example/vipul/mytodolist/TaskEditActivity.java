@@ -80,6 +80,8 @@ public class TaskEditActivity extends Activity {
     private int countday;
     private String rep=daysList[0];
     int row;
+    private int eventId;
+    private String repeatInterval;
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -130,7 +132,7 @@ public class TaskEditActivity extends Activity {
         row = (int)getIntent().getExtras().get(EXTRA_ROW);
         SQLiteOpenHelper taskHelper = new TODOListDatabaseHelper(this);
         SQLiteDatabase db = taskHelper.getReadableDatabase();
-        Cursor cursor = db.query("NEWTASK4",new String[]{"TASK_NAME","START_DATE","END_DATE","START_TIME","END_TIME","REPEAT_TASK","REPEAT_AFTER","DESCRIPTION","PRIORITY","IMAGE","REMINDER"},
+        Cursor cursor = db.query("NEWTASK6",new String[]{"TASK_NAME","START_DATE","END_DATE","START_TIME","END_TIME","REPEAT_TASK","REPEAT_AFTER","DESCRIPTION","PRIORITY","IMAGE","REMINDER","REPEAT_INTERVAL","CALENDAR_EVENT_ID"},
                 "_id=?",new String[]{Integer.toString(row)},null,null,null);
         if(cursor.moveToFirst()) {
             editname.setText(cursor.getString(0));
@@ -140,74 +142,47 @@ public class TaskEditActivity extends Activity {
             editFinishTime.setText(cursor.getString(4));
             boolean val = (cursor.getInt(5) != 0);
             editRepeatText.setChecked(val);
-            String repeatDate = cursor.getString(6);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Calendar c = Calendar.getInstance();
-            Calendar cur = Calendar.getInstance();
-            try {
-                c.setTime(dateFormat.parse(repeatDate));
-                cur.setTime(dateFormat.parse(cursor.getString(2)+" "+cursor.getString(4)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            int f = 0;
+            //String repeatDate = cursor.getString(6);
+            repeatInterval = cursor.getString(11);
+            eventId = cursor.getInt(12);
             if(val) {
-                c.add(Calendar.DAY_OF_MONTH, -1);
-                if (c.compareTo(cur) == 0) {
+                String arr[] = repeatInterval.split(" ");
+                if (arr[1].equals("day")&&arr[0].equals("1")) {
                     editDaily.setChecked(true);
-                    f = 1;
-                    c.add(Calendar.DAY_OF_MONTH, 1);
-                } else {
-                    c.add(Calendar.DAY_OF_MONTH, 1);
                 }
-                c.add(Calendar.DAY_OF_MONTH, -7);
-                if (c.compareTo(cur) == 0) {
+                else if (arr[1].equals("week")&&arr[0].equals("1")) {
                     editWeekly.setChecked(true);
-                    f = 1;
-                    c.add(Calendar.DAY_OF_MONTH, 7);
-                } else {
-                    c.add(Calendar.DAY_OF_MONTH, 7);
                 }
-                c.add(Calendar.MONTH, -1);
-                if (c.compareTo(cur) == 0) {
+                else if (arr[1].equals("month")&&arr[0].equals("1")) {
                     editMonthly.setChecked(true);
-                    f = 1;
-                    c.add(Calendar.MONTH, 1);
-                } else {
-                    c.add(Calendar.MONTH, 1);
                 }
-                c.add(Calendar.YEAR, -1);
-                if (c.compareTo(cur) == 0) {
-                    editMonthly.setChecked(true);
-                    f = 1;
-                    c.add(Calendar.YEAR, 1);
-                } else {
-                    c.add(Calendar.YEAR, 1);
+                else if (arr[1].equals("year")&&arr[0].equals("1")) {
+                    editYearly.setChecked(true);
                 }
-                if (f == 0) {
-                    if (c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH) != 0) {
-                        if ((c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH) % 7 != 0)) {
-                            countday = c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH);
+                else {
+                    countday = Integer.parseInt(arr[0]);
+                    switch (arr[1]) {
+                        case "second":
+                            rep = daysList[0];
+                            break;
+                        case "minute":
+                            rep = daysList[1];
+                            break;
+                        case "hour":
+                            rep = daysList[2];
+                            break;
+                        case "day":
                             rep = daysList[3];
-                        } else {
-                            countday = (c.get(Calendar.DAY_OF_MONTH) - cur.get(Calendar.DAY_OF_MONTH)) / 7;
+                            break;
+                        case "week":
                             rep = daysList[4];
-                        }
-                    } else if (c.get(Calendar.YEAR) - cur.get(Calendar.YEAR) != 0) {
-                        countday = c.get(Calendar.YEAR) - cur.get(Calendar.YEAR);
-                        rep = daysList[6];
-                    } else if (c.get(Calendar.MONTH) - cur.get(Calendar.MONTH) != 0) {
-                        countday = c.get(Calendar.MONTH) - cur.get(Calendar.MONTH);
-                        rep = daysList[5];
-                    } else if (c.get(Calendar.HOUR_OF_DAY) - cur.get(Calendar.HOUR_OF_DAY) != 0) {
-                        countday = c.get(Calendar.HOUR_OF_DAY) - cur.get(Calendar.HOUR_OF_DAY);
-                        rep = daysList[2];
-                    } else if (c.get(Calendar.MINUTE) - cur.get(Calendar.MINUTE) != 0) {
-                        countday = c.get(Calendar.MINUTE) - cur.get(Calendar.MINUTE);
-                        rep = daysList[1];
-                    } else if (c.get(Calendar.SECOND) - cur.get(Calendar.SECOND) != 0) {
-                        countday = c.get(Calendar.SECOND) - cur.get(Calendar.SECOND);
-                        rep = daysList[0];
+                            break;
+                        case "month":
+                            rep = daysList[5];
+                            break;
+                        case "year":
+                            rep = daysList[6];
+                            break;
                     }
                     editOther.setChecked(true);
                 }
@@ -267,38 +242,48 @@ public class TaskEditActivity extends Activity {
         if(isrepeating){
             if(editDaily.isChecked()){
                 c.add(Calendar.DAY_OF_MONTH,1);
-
+                repeatInterval = ""+1+" "+"day";
             }
             else if(editWeekly.isChecked()){
                 c.add(Calendar.DAY_OF_MONTH,7);
+                repeatInterval = ""+1+" "+"week";
             }
             else if(editMonthly.isChecked()){
                 c.add(Calendar.MONTH,1);
+                repeatInterval = ""+1+" "+"month";
             }
             else if(editYearly.isChecked()){
                 c.add(Calendar.YEAR,1);
+                repeatInterval = ""+1+" "+"year";
             }
             else if(editOther.isChecked()){
                 if(rep.equals("second(s)")){
                     c.add(Calendar.SECOND,countday);
+                    repeatInterval = ""+countday+" "+"second";
                 }
                 if(rep.equals("minute(s)")){
                     c.add(Calendar.MINUTE,countday);
+                    repeatInterval = ""+countday+" "+"minute";
                 }
                 if(rep.equals("hour(s)")){
                     c.add(Calendar.HOUR_OF_DAY,countday);
+                    repeatInterval = ""+countday+" "+"hour";
                 }
                 if(rep.equals("day(s)")){
                     c.add(Calendar.DAY_OF_MONTH,countday);
+                    repeatInterval = ""+countday+" "+"day";
                 }
                 if(rep.equals("week(s)")){
                     c.add(Calendar.DAY_OF_MONTH,7*countday);
+                    repeatInterval = ""+countday+" "+"week";
                 }
                 if(rep.equals("month(s)")){
                     c.add(Calendar.MONTH,countday);
+                    repeatInterval = ""+countday+" "+"month";
                 }
                 if(rep.equals("year(s)")){
                     c.add(Calendar.YEAR,countday);
+                    repeatInterval = ""+countday+" "+"year";
                 }
             }
         }
@@ -306,13 +291,13 @@ public class TaskEditActivity extends Activity {
         boolean isReminderSet = editReminder.isChecked();
         SQLiteOpenHelper todoDatabaseHelper = new TODOListDatabaseHelper(this);
         SQLiteDatabase db = todoDatabaseHelper.getWritableDatabase();
-        updateMyTask(db, name, from, to, time, timefinish, isrepeating, c, description, priority, finalImage, isReminderSet);
+        updateMyTask(db, name, from, to, time, timefinish, isrepeating, c, description, priority, finalImage, isReminderSet, repeatInterval);
         //Toast.makeText(this,"inserted",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
 
-    public void updateMyTask(SQLiteDatabase db,String taskName, String startDate, String endDate, String startTime, String finishTime, boolean repeatTask,Calendar repeatAfterDate, String description, int priority, byte[] fi, boolean isReminderSet){
+    public void updateMyTask(SQLiteDatabase db,String taskName, String startDate, String endDate, String startTime, String finishTime, boolean repeatTask,Calendar repeatAfterDate, String description, int priority, byte[] fi, boolean isReminderSet, String repeatInterval){
         ContentValues taskValues = new ContentValues();
         taskValues.put("TASK_NAME",taskName);
         taskValues.put("START_DATE",startDate);
@@ -327,6 +312,8 @@ public class TaskEditActivity extends Activity {
         taskValues.put("PRIORITY", priority);
         taskValues.put("IMAGE", fi);
         taskValues.put("REMINDER", isReminderSet);
+        taskValues.put("REPEAT_INTERVAL",repeatInterval);
+        new CalendarTask(getApplicationContext()).UpdateEvent(eventId,taskName,endDate+" "+finishTime+":00",description);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Calendar c = Calendar.getInstance();
         taskValues.put("MODIFIED_DATE", formatter.format(c.getTime()));
@@ -337,7 +324,7 @@ public class TaskEditActivity extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        db.update("NEWTASK4", taskValues, "_id=?", new String[]{Integer.toString(row)});
+        db.update("NEWTASK6", taskValues, "_id=?", new String[]{Integer.toString(row)});
         Log.v("updateTask",""+row);
 
         if(TimerService.taskCounters.containsKey(row))
