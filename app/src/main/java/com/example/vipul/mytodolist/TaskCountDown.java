@@ -17,6 +17,7 @@ public class TaskCountDown extends CountDownTimer implements Serializable {
     private int row;
     private Context context;
     private long millisInFuture;
+    private boolean isRepeating;
 
     public TaskCountDown(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
@@ -27,7 +28,7 @@ public class TaskCountDown extends CountDownTimer implements Serializable {
         this.flag = flag;
     }
 
-    public TaskCountDown(long millisInFuture, long countDownInterval,Context context, int flag, boolean isReminderSet, String taskName, int priority, int row) {
+    public TaskCountDown(long millisInFuture, long countDownInterval,Context context, int flag, boolean isReminderSet, String taskName, int priority, int row, boolean isRepeating) {
         super(millisInFuture, countDownInterval);
         this.context = context;
         this.millisInFuture = millisInFuture;
@@ -36,6 +37,7 @@ public class TaskCountDown extends CountDownTimer implements Serializable {
         this.taskName = taskName;
         this.priority = priority;
         this.row = row;
+        this.isRepeating = isRepeating;
     }
 
 
@@ -89,6 +91,7 @@ public class TaskCountDown extends CountDownTimer implements Serializable {
             intent.putExtra(TaskNotificationService.EXTRA_ROW, row);
             intent.putExtra(TaskNotificationService.EXTRA_FLAG, flag);
             intent.putExtra(TaskNotificationService.EXTRA_PRIORITY, priority);
+            intent.putExtra(TaskNotificationService.EXTRA_REPEATING, isRepeating);
             context.startService(intent);
         }
     }

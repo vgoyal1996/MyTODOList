@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Mytheme1" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_main_tasks_activity">
+            android:label="@string/title_main_tasks_activity" >
         </activity>
         <activity
             android:name=".NewTaskActivity"
@@ -57,7 +57,7 @@
         </activity>
         <activity
             android:name=".SearchResultListviewActivity"
-            android:label="@string/title_search_results">
+            android:label="@string/title_search_results" >
         </activity>
         <activity
             android:name=".SearchResultGridViewActivity"
@@ -73,7 +73,11 @@
             android:exported="false" >
         </service>
         <service
-            android:name=".CompleteAndRestartTaskService"
+            android:name=".CompleteTaskService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".RestartTaskService"
             android:exported="false" >
         </service>
     </application>

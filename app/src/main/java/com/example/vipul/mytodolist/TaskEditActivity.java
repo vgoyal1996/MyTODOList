@@ -345,6 +345,7 @@ public class TaskEditActivity extends Activity {
         i.putExtra(TimerService.EXTRA_SERVICE_PRIORITY,priority);
         i.putExtra(TimerService.EXTRA_SERVICE_REMINDER,isReminderSet);
         i.putExtra(TimerService.EXTRA_SERVICE_TASKNAME,taskName);
+        i.putExtra(TimerService.EXTRA_SERVICE_REPEATING,repeatTask);
         startService(i);
         db.close();
         Toast.makeText(this,"Update Successful", Toast.LENGTH_SHORT).show();

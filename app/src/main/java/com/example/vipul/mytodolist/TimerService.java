@@ -16,6 +16,7 @@ public class TimerService extends IntentService {
     public static final String EXTRA_SERVICE_TASKNAME = "taskname";
     public static final String EXTRA_SERVICE_PRIORITY = "priority";
     public static final String EXTRA_SERVICE_ROW = "row";
+    public static final String EXTRA_SERVICE_REPEATING = "repeating";
 
     public TimerService() {
         super("TimerService");
@@ -32,7 +33,8 @@ public class TimerService extends IntentService {
             long seconds = (long) intent.getExtras().get(EXTRA_SERVICE_SECONDS);
             String taskName = (String) intent.getExtras().get(EXTRA_SERVICE_TASKNAME);
             int priority = (int) intent.getExtras().get(EXTRA_SERVICE_PRIORITY);
-            TaskCountDown tcd = new TaskCountDown(seconds, interval, getApplicationContext(), flag, isReminderset, taskName, priority, row);
+            boolean isRepeating = (boolean)intent.getExtras().get(EXTRA_SERVICE_REPEATING);
+            TaskCountDown tcd = new TaskCountDown(seconds, interval, getApplicationContext(), flag, isReminderset, taskName, priority, row, isRepeating);
             tcd.start();
             if (!taskCounters.containsKey(row)) {
                 taskCounters.put(row, tcd);

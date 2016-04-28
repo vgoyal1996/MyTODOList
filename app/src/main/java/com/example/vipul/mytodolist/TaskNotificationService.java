@@ -24,10 +24,12 @@ public class TaskNotificationService extends IntentService {
     public static final String EXTRA_NAME = "name";
     public static final String EXTRA_FLAG = "flag";
     public static final String EXTRA_PRIORITY = "priority";
+    public static final String EXTRA_REPEATING = "repeating";
     private int row;
     private String name;
     private int flag;
     private int prior;
+    private boolean isRepeating;
 
     public TaskNotificationService() {
         super("TaskNotificationService");
@@ -40,6 +42,7 @@ public class TaskNotificationService extends IntentService {
         row = (int)intent.getExtras().get(EXTRA_ROW);
         name = (String)intent.getExtras().get(EXTRA_NAME);
         prior = (int)intent.getExtras().get(EXTRA_PRIORITY);
+        isRepeating = (boolean)intent.getExtras().get(EXTRA_REPEATING);
         String message;
         if(flag==1) {
             message = "Task " + name + " started";
@@ -114,8 +117,8 @@ public class TaskNotificationService extends IntentService {
         notification.setContentText(message);
         notification.setContentIntent(pendingIntent);
         Intent i = new Intent(TaskNotificationService.this,SnoozeService.class);
-        Intent completeIntent = new Intent(TaskNotificationService.this,CompleteAndRestartTaskService.class);
-        completeIntent.putExtra(CompleteAndRestartTaskService.SERVICE_EXTRA_ROW,row);
+        Intent completeIntent = new Intent(TaskNotificationService.this,CompleteTaskService.class);
+        completeIntent.putExtra(CompleteTaskService.SERVICE_EXTRA_ROW,row);
         i.putExtra(SnoozeService.SNOOZE_EXTRA_NAME, name);
         i.putExtra(SnoozeService.SNOOZE_EXTRA_ROW, row);
         i.putExtra(SnoozeService.SNOOZE_EXTRA_FLAG, flag);
@@ -127,5 +130,10 @@ public class TaskNotificationService extends IntentService {
         Notification notif = notification.build();
         NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(NOTIFICATION_ID,notif);
+        if(isRepeating){
+            Intent restart = new Intent(this,RestartTaskService.class);
+            restart.putExtra(RestartTaskService.RESTART_SERVICE_EXTRA_ROW,row);
+            startService(restart);
+        }
     }
 }

@@ -437,6 +437,7 @@ public class NewTaskActivity extends Activity {
         i.putExtra(TimerService.EXTRA_SERVICE_PRIORITY,priority);
         i.putExtra(TimerService.EXTRA_SERVICE_REMINDER,isReminderSet);
         i.putExtra(TimerService.EXTRA_SERVICE_TASKNAME, taskName);
+        i.putExtra(TimerService.EXTRA_SERVICE_REPEATING,repeatTask);
         startService(i);
         db.close();
     }

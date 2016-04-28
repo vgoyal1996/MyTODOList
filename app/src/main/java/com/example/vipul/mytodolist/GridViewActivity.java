@@ -540,6 +540,7 @@ public class GridViewActivity extends Activity {
                         i.putExtra(TimerService.EXTRA_SERVICE_PRIORITY, priority);
                         i.putExtra(TimerService.EXTRA_SERVICE_REMINDER, isReminderSet);
                         i.putExtra(TimerService.EXTRA_SERVICE_TASKNAME, taskName);
+                        i.putExtra(TimerService.EXTRA_SERVICE_REPEATING, o.isrepeating());
                         startService(i);
                     }
                 }

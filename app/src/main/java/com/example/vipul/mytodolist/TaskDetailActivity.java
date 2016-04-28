@@ -167,7 +167,7 @@ public class TaskDetailActivity extends Activity  {
                     int priority = tcd.getPriority();
                     boolean rem = tcd.isReminderSet();
                     TimerService.taskCounters.remove(row);
-                    TaskCountDown t = new TaskCountDown(endDate.getTime()-(new Date().getTime()),1000,getApplicationContext(),2,rem,name,priority,row);
+                    TaskCountDown t = new TaskCountDown(endDate.getTime()-(new Date().getTime()),1000,getApplicationContext(),2,rem,name,priority,row,isRepeating);
                     TimerService.taskCounters.put(row,t);
                     t.start();
                     UpdateTextView(t);
