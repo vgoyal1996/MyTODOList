@@ -90,7 +90,7 @@ public class TaskNotificationService extends IntentService {
             notPrior=Notification.PRIORITY_MAX;
 
         notification = new NotificationCompat.Builder(this);
-        notification.setSmallIcon(R.mipmap.ic_launcher);
+        notification.setSmallIcon(R.mipmap.notification_launcher);
         notification.setContentTitle(getString(R.string.app_name));
         if(flag==1)
             notification.setAutoCancel(true);
@@ -133,7 +133,7 @@ public class TaskNotificationService extends IntentService {
         if(isRepeating){
             Intent restart = new Intent(this,RestartTaskService.class);
             restart.putExtra(RestartTaskService.RESTART_SERVICE_EXTRA_ROW,row);
-            startService(restart);
+            getApplicationContext().startService(restart);
         }
     }
 }

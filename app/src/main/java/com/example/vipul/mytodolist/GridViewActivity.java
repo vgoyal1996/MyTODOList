@@ -318,7 +318,7 @@ public class GridViewActivity extends Activity {
                         try {
                             SQLiteOpenHelper taskHelper = new TODOListDatabaseHelper(GridViewActivity.this);
                             SQLiteDatabase database = taskHelper.getWritableDatabase();
-                            Cursor c = db.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
+                            Cursor c = database.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
                             int eventId = 0;
                             if(c.moveToNext())
                                 eventId = c.getInt(0);
@@ -372,7 +372,7 @@ public class GridViewActivity extends Activity {
                         try {
                             SQLiteOpenHelper taskHelper = new TODOListDatabaseHelper(GridViewActivity.this);
                             SQLiteDatabase database = taskHelper.getWritableDatabase();
-                            Cursor c = db.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
+                            Cursor c = database.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
                             int eventId = 0;
                             if(c.moveToNext())
                                 eventId = c.getInt(0);
@@ -426,7 +426,7 @@ public class GridViewActivity extends Activity {
                         try {
                             SQLiteOpenHelper taskHelper = new TODOListDatabaseHelper(GridViewActivity.this);
                             SQLiteDatabase database = taskHelper.getWritableDatabase();
-                            Cursor c = db.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
+                            Cursor c = database.query("NEWTASK6", new String[]{"CALENDAR_EVENT_ID"}, "_id=?", new String[]{"" + rowId}, null, null, null);
                             int eventId = 0;
                             if(c.moveToNext())
                                 eventId = c.getInt(0);

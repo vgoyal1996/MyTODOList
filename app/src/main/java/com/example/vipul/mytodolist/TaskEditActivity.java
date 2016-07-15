@@ -313,7 +313,8 @@ public class TaskEditActivity extends Activity {
         taskValues.put("IMAGE", fi);
         taskValues.put("REMINDER", isReminderSet);
         taskValues.put("REPEAT_INTERVAL",repeatInterval);
-        new CalendarTask(getApplicationContext()).UpdateEvent(eventId,taskName,endDate+" "+finishTime+":00",description);
+        if(eventId!=-1)
+            new CalendarTask(getApplicationContext()).UpdateEvent(eventId,taskName,endDate+" "+finishTime+":00",description);
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Calendar c = Calendar.getInstance();
         taskValues.put("MODIFIED_DATE", formatter.format(c.getTime()));
