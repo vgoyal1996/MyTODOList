@@ -229,41 +229,44 @@
             android:layout_marginTop="30dp"
             android:layout_marginStart="5dp"
             android:text="Priority"
-            android:textSize="20sp"
-            android:layout_weight="2"/>
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
-            android:text="*"
-            android:textSize="30sp"
-            android:textColor="#01DF01"
-            android:id="@+id/priority1"
-            android:layout_weight="1"/>
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
-            android:text="**"
-            android:textSize="30sp"
-            android:textColor="#FFFFFF"
-            android:id="@+id/priority2"
-            android:layout_weight="1"/>
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
-            android:text="***"
-            android:textSize="30sp"
-            android:textColor="#FE2E2E"
-            android:id="@+id/priority3"
-            android:layout_weight="1"/>
+            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:text="*"
+                android:textSize="30sp"
+                android:textColor="#01DF01"
+                android:id="@+id/priority1"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:text="**"
+                android:textSize="30sp"
+                android:textColor="#FFFFFF"
+                android:id="@+id/priority2"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                android:text="***"
+                android:textSize="30sp"
+                android:textColor="#FE2E2E"
+                android:id="@+id/priority3"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

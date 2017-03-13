@@ -156,8 +156,8 @@ public class NewTaskActivity extends Activity {
             @Override
             public void onClick(View v) {
                 prior1.setBackgroundResource(R.drawable.rounded_background);
-                prior2.setBackgroundResource(Color.TRANSPARENT);
-                prior3.setBackgroundResource(Color.TRANSPARENT);
+                prior2.setBackgroundColor(Color.TRANSPARENT);
+                prior3.setBackgroundColor(Color.TRANSPARENT);
                 priority = 1;
             }
         });
@@ -166,8 +166,8 @@ public class NewTaskActivity extends Activity {
             @Override
             public void onClick(View v) {
                 prior2.setBackgroundResource(R.drawable.rounded_background);
-                prior1.setBackgroundResource(Color.TRANSPARENT);
-                prior3.setBackgroundResource(Color.TRANSPARENT);
+                prior1.setBackgroundColor(Color.TRANSPARENT);
+                prior3.setBackgroundColor(Color.TRANSPARENT);
                 priority=2;
             }
         });
@@ -176,8 +176,8 @@ public class NewTaskActivity extends Activity {
             @Override
             public void onClick(View v) {
                 prior3.setBackgroundResource(R.drawable.rounded_background);
-                prior2.setBackgroundResource(Color.TRANSPARENT);
-                prior1.setBackgroundResource(Color.TRANSPARENT);
+                prior2.setBackgroundColor(Color.TRANSPARENT);
+                prior1.setBackgroundColor(Color.TRANSPARENT);
                 priority=3;
             }
         });

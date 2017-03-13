@@ -21,7 +21,7 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:layout_marginTop="30dp"
-            android:drawablePadding="100dp"
+            android:drawablePadding="0dp"
             android:drawableRight="@android:drawable/btn_radio"
             android:drawableEnd="@android:drawable/btn_radio"
             android:id="@+id/priority_sort"/>
@@ -34,7 +34,7 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:layout_marginTop="10dp"
-            android:drawablePadding="33dp"
+            android:drawablePadding="0dp"
             android:drawableRight="@android:drawable/btn_radio"
             android:drawableEnd="@android:drawable/btn_radio"
             android:id="@+id/modified_sort"/>
@@ -47,7 +47,7 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:layout_marginTop="10dp"
-            android:drawablePadding="137dp"
+            android:drawablePadding="0dp"
             android:drawableRight="@android:drawable/btn_radio"
             android:drawableEnd="@android:drawable/btn_radio"
             android:id="@+id/title_sort"/>
@@ -60,7 +60,7 @@
             android:textColor="#000000"
             android:textSize="25sp"
             android:layout_marginTop="10dp"
-            android:drawablePadding="50dp"
+            android:drawablePadding="0dp"
             android:drawableRight="@android:drawable/btn_radio"
             android:drawableEnd="@android:drawable/btn_radio"
             android:id="@+id/created_sort"/>
