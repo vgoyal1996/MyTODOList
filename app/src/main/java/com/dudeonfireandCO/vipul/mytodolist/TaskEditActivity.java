@@ -1,4 +1,4 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -36,6 +36,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.vipul.mytodolist.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

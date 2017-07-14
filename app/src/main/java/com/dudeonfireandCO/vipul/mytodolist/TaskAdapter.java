@@ -1,4 +1,4 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.vipul.mytodolist.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

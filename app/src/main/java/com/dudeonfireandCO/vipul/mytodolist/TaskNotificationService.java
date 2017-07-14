@@ -1,4 +1,4 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 import android.app.IntentService;
 import android.app.Notification;
@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.example.vipul.mytodolist.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

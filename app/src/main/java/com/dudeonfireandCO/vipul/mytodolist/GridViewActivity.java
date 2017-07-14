@@ -1,4 +1,4 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -30,6 +30,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.Toast;
+
+import com.example.vipul.mytodolist.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

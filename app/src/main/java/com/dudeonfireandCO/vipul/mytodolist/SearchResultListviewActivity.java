@@ -1,4 +1,4 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,8 +11,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TabHost;
+
+import com.example.vipul.mytodolist.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,46 +22,47 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class SearchResultGridViewActivity extends Activity {
+public class SearchResultListviewActivity extends Activity {
     private ArrayList<MyObject> names;
     private String[] ids;
     private int i=0;
     private SQLiteDatabase db;
-    private GridView searchListUpcoming;
-    private GridView searchListRunning;
-    private GridView searchListCompleted;
+    private ListView searchListUpcoming;
+    private ListView searchListRunning;
+    private ListView searchListCompleted;
     private ArrayList<MyObject> taskArrayUpcoming;
     private ArrayList<MyObject> taskArrayRunning;
     private ArrayList<MyObject> taskArrayCompleted;
     private TabHost tabHost;
     private GestureDetector gestureDetector;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_result_grid_view);
-        names = (ArrayList<MyObject>) getIntent().getExtras().get("ArrayList2");
+        setContentView(R.layout.activity_search_result);
+        names = (ArrayList<MyObject>)getIntent().getExtras().get("ArrayList");
         ids = new String[names.size()];
         for(MyObject o:names){
             ids[i] = Integer.toString(o.getId());
             i++;
         }
 
-        tabHost = (TabHost)findViewById(R.id.tabHost2);
+        tabHost = (TabHost)findViewById(R.id.tabHost);
         tabHost.setup();
 
         TabHost.TabSpec tabSpec = tabHost.newTabSpec("Upcoming List");
-        tabSpec.setContent(R.id.upcoming_grid);
+        tabSpec.setContent(R.id.task_listview_upcoming);
         tabSpec.setIndicator("Upcoming");
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("Running List");
-        tabSpec.setContent(R.id.running_grid);
+        tabSpec.setContent(R.id.task_listview_running);
         tabSpec.setIndicator("Running");
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("Completed List");
-        tabSpec.setContent(R.id.completed_grid);
+        tabSpec.setContent(R.id.task_listview_completed);
         tabSpec.setIndicator("Completed");
         tabHost.addTab(tabSpec);
         tabHost.setCurrentTab(1);
@@ -68,9 +71,9 @@ public class SearchResultGridViewActivity extends Activity {
 
         gestureDetector = new GestureDetector(this,new MyGestureDetector());
 
-        searchListUpcoming = (GridView)findViewById(R.id.task_grid_upcoming);
-        searchListRunning = (GridView)findViewById(R.id.task_grid_running);
-        searchListCompleted = (GridView)findViewById(R.id.task_grid_completed);
+        searchListCompleted = (ListView)findViewById(R.id.task_listview_completed);
+        searchListRunning = (ListView)findViewById(R.id.task_listview_running);
+        searchListUpcoming = (ListView)findViewById(R.id.task_listview_upcoming);
 
         searchListRunning.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -96,7 +99,7 @@ public class SearchResultGridViewActivity extends Activity {
         searchListUpcoming.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SearchResultGridViewActivity.this, TaskDetailActivity.class);
+                Intent intent = new Intent(SearchResultListviewActivity.this, TaskDetailActivity.class);
                 int c = taskArrayUpcoming.get(position).getId();
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -108,7 +111,7 @@ public class SearchResultGridViewActivity extends Activity {
         searchListRunning.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SearchResultGridViewActivity.this, TaskDetailActivity.class);
+                Intent intent = new Intent(SearchResultListviewActivity.this, TaskDetailActivity.class);
                 int c = taskArrayRunning.get(position).getId();
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -120,7 +123,7 @@ public class SearchResultGridViewActivity extends Activity {
         searchListCompleted.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SearchResultGridViewActivity.this, TaskDetailActivity.class);
+                Intent intent = new Intent(SearchResultListviewActivity.this, TaskDetailActivity.class);
                 int c = taskArrayCompleted.get(position).getId();
                 intent.putExtra(TaskDetailActivity.EXTRA_ROW, c);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -134,6 +137,12 @@ public class SearchResultGridViewActivity extends Activity {
     public boolean onTouchEvent(MotionEvent event) {
         this.gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.overridePendingTransition(R.anim.anim_leave, R.anim.anim_enter);
     }
 
     class MyGestureDetector extends GestureDetector.SimpleOnGestureListener{
@@ -186,12 +195,12 @@ public class SearchResultGridViewActivity extends Activity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(SearchResultGridViewActivity.this);
+            SQLiteOpenHelper taskDatabaseHelper = new TODOListDatabaseHelper(SearchResultListviewActivity.this);
             db = taskDatabaseHelper.getReadableDatabase();
-            Cursor cursor = db.query("NEWTASK6", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","IMAGE","START_TIME","END_TIME","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION"}, null, null, null, null, "_id DESC");
-            taskArrayCompleted = new ArrayList<MyObject>();
+            Cursor cursor = db.query("NEWTASK6", new String[]{"_id", "TASK_NAME", "PRIORITY","MODIFIED_DATE","START_DATE","END_DATE","START_TIME","END_TIME","IMAGE","REPEAT_TASK","REPEAT_AFTER","REMINDER","DESCRIPTION"}, null, null, null, null, "_id DESC");
             taskArrayRunning = new ArrayList<MyObject>();
             taskArrayUpcoming = new ArrayList<MyObject>();
+            taskArrayCompleted = new ArrayList<MyObject>();
             Date cur = new Date();
             i=0;
             while(cursor.moveToNext()){
@@ -199,18 +208,17 @@ public class SearchResultGridViewActivity extends Activity {
                     SimpleDateFormat f = new SimpleDateFormat("dd/MM/yy HH:mm");
                     Date start = null, end = null;
                     try {
-                        start = f.parse(cursor.getString(4) + " " + cursor.getString(7));
-                        end = f.parse(cursor.getString(5) + " " + cursor.getString(8));
+                        start = f.parse(cursor.getString(4) + " " + cursor.getString(6));
+                        end = f.parse(cursor.getString(5) + " " + cursor.getString(7));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    byte[] image = cursor.getBlob(6);
-                    if(cur.compareTo(start)<0)
-                        taskArrayUpcoming.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(7),cursor.getString(8),cursor.getInt(9),cursor.getString(10),cursor.getString(12),image,cursor.getInt(11)));
-                    else if(cur.compareTo(end)>0)
-                        taskArrayCompleted.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(7),cursor.getString(8),cursor.getInt(9),cursor.getString(10),cursor.getString(12),image,cursor.getInt(11)));
+                    if (cur.compareTo(start) < 0)
+                        taskArrayUpcoming.add(new MyObject(cursor.getInt(0), cursor.getInt(2), cursor.getString(1), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(9), cursor.getString(10), cursor.getString(12), cursor.getBlob(8), cursor.getInt(11)));
+                    else if (cur.compareTo(end) > 0)
+                        taskArrayCompleted.add(new MyObject(cursor.getInt(0), cursor.getInt(2), cursor.getString(1), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(9), cursor.getString(10), cursor.getString(12), cursor.getBlob(8), cursor.getInt(11)));
                     else
-                        taskArrayRunning.add(new MyObject(cursor.getInt(0),cursor.getInt(2),cursor.getString(1),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(7),cursor.getString(8),cursor.getInt(9),cursor.getString(10),cursor.getString(12),image,cursor.getInt(11)));
+                        taskArrayRunning.add(new MyObject(cursor.getInt(0), cursor.getInt(2), cursor.getString(1), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getInt(9), cursor.getString(10), cursor.getString(12), cursor.getBlob(8), cursor.getInt(11)));
                     i++;
                     if(i==ids.length)
                         break;
@@ -220,14 +228,12 @@ public class SearchResultGridViewActivity extends Activity {
             return null;
         }
 
-
-
         @Override
         protected void onPostExecute(Void params) {
             super.onPostExecute(params);
-            GridAdapter taskAdapterRunning = new GridAdapter(SearchResultGridViewActivity.this,R.layout.listview_grid_layout,taskArrayRunning);
-            GridAdapter taskAdapterCompleted = new GridAdapter(SearchResultGridViewActivity.this,R.layout.listview_grid_layout,taskArrayCompleted);
-            GridAdapter taskAdapterUpcoming = new GridAdapter(SearchResultGridViewActivity.this,R.layout.listview_grid_layout,taskArrayUpcoming);
+            TaskAdapter taskAdapterRunning = new TaskAdapter(SearchResultListviewActivity.this,R.layout.listview_layout,taskArrayRunning);
+            TaskAdapter taskAdapterCompleted = new TaskAdapter(SearchResultListviewActivity.this,R.layout.listview_layout,taskArrayCompleted);
+            TaskAdapter taskAdapterUpcoming = new TaskAdapter(SearchResultListviewActivity.this,R.layout.listview_layout,taskArrayUpcoming);
             searchListRunning.setAdapter(taskAdapterRunning);
             searchListCompleted.setAdapter(taskAdapterCompleted);
             searchListUpcoming.setAdapter(taskAdapterUpcoming);
@@ -235,9 +241,4 @@ public class SearchResultGridViewActivity extends Activity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.overridePendingTransition(R.anim.anim_leave, R.anim.anim_enter);
-    }
 }

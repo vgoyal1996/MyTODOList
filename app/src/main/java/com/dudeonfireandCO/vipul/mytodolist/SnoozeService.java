@@ -1,4 +1,4 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.example.vipul.mytodolist.R;
 
 import java.util.Calendar;
 

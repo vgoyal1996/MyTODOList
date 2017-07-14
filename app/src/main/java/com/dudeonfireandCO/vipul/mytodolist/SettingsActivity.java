@@ -1,8 +1,10 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+
+import com.example.vipul.mytodolist.R;
 
 
 public class SettingsActivity extends Activity {

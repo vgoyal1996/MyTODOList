@@ -1,4 +1,4 @@
-package com.example.vipul.mytodolist;
+package com.dudeonfireandCO.vipul.mytodolist;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.vipul.mytodolist.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
