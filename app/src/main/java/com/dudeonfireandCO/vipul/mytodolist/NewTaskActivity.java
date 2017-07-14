@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.vipul.mytodolist.R;
 
@@ -312,10 +314,30 @@ public class NewTaskActivity extends Activity {
     }
 
     public void createNewTask(View v){
+        if(TextUtils.isEmpty(nameText.getText())){
+            Toast.makeText(NewTaskActivity.this,"Please give a name to your task",Toast.LENGTH_LONG).show();
+            return;
+        }
         name = nameText.getText().toString();
+        if(TextUtils.isEmpty(fromtext.getText())){
+            Toast.makeText(NewTaskActivity.this,"Please give a start date to your task",Toast.LENGTH_LONG).show();
+            return;
+        }
         from = fromtext.getText().toString();
+        if(TextUtils.isEmpty(totext.getText())){
+            Toast.makeText(NewTaskActivity.this,"Please give an end date to your task",Toast.LENGTH_LONG).show();
+            return;
+        }
         to = totext.getText().toString();
+        if(TextUtils.isEmpty(startTimeText.getText())){
+            Toast.makeText(NewTaskActivity.this,"Please give a start time to your task",Toast.LENGTH_LONG).show();
+            return;
+        }
         time = startTimeText.getText().toString();
+        if(TextUtils.isEmpty(finishTimeText.getText())){
+            Toast.makeText(NewTaskActivity.this,"Please give a finish time to your task",Toast.LENGTH_LONG).show();
+            return;
+        }
         timefinish = finishTimeText.getText().toString();
         isrepeating = checkBox.isChecked();
         Calendar c = Calendar.getInstance();
@@ -375,7 +397,10 @@ public class NewTaskActivity extends Activity {
                 }
             }
         }
-        description = descriptiontext.getText().toString();
+        if(TextUtils.isEmpty(fromtext.getText()))
+            description = "";
+        else
+            description = descriptiontext.getText().toString();
         isReminderSet = reminderCheckBox.isChecked();
         int calendarEventId = -1;
         SQLiteOpenHelper todoDatabaseHelper = new TODOListDatabaseHelper(this);

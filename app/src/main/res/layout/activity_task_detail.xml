@@ -6,7 +6,7 @@
 <LinearLayout  android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="com.example.vipul.mytodolist.com.dudeonfireandCO.vipul.mytodolist.TaskDetailActivity">
+    tools:context="com.dudeonfireandCO.vipul.mytodolist.TaskDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
