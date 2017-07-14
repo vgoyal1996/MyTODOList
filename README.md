@@ -34,7 +34,18 @@ Tasks can be sorted on the basis of creation time, time of modification, priorit
 ![Alt text](https://github.com/vipulabhay1996/MyTODOList/blob/master/screenshots/Screenshot_1493114172.png)<br><br>
 
 6. **Settings**<br><br>
-App provides a number of settings as per user requirements
+App provides a number of settings as per user requirements.<br>
+* Vibration settings
+* Setting custom ringtone
+* Switch between list view and grid view
+* Snooze settings
+* Quiet hour settings<br>
+![Alt text](https://github.com/vipulabhay1996/MyTODOList/blob/master/screenshots/Screenshot_1493114187.png)<br>
+
+7. **Editing and Deletion**<br><br>
+On long clicking a task, it can be edited as well as deleted.<br>
+![Alt text](https://github.com/vipulabhay1996/MyTODOList/blob/master/screenshots/Screenshot_1493199916.png)<br>
+
 
 
 
