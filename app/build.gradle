@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "com.example.vipul.mytodolist"
+        applicationId "com.dudeonfireandCO.vipul.mytodolist"
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
