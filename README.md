@@ -6,6 +6,9 @@ Several useful features and an interactive and a catchy user interface is what s
 * Import the project into android studio.
 * Run the app using "play" or "debug" button.
 
+# Find the app on Google Playstore
+https://play.google.com/store/apps/details?id=com.dudeonfireandCO.vipul.mytodolist
+
 # Features
 1. **Upcoming, Running and Completed Tasks**<br><br>
 MyTODOList keeps track of currently running tasks, upcoming tasks and completed tasks and regularly informs the user about the same.<br><br>
